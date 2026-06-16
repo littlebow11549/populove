@@ -144,7 +144,11 @@ function renderContactInfo() {
 }
 
 function bannerTitleHtml(title) {
-  return escapeHtml(title).replace(/([，、；,])/, "$1<br>");
+  const raw = String(title || "");
+  if (/[|｜]/.test(raw)) {
+    return raw.split(/[|｜]/).map((part) => escapeHtml(part.trim())).filter(Boolean).join("<br>");
+  }
+  return escapeHtml(raw).replace(/([，、；,])/, "$1<br>");
 }
 function renderBanners() {
   if (!heroSlider || !sliderControls) return;
@@ -154,7 +158,7 @@ function renderBanners() {
     const article = document.createElement("article");
     article.className = `hero-slide${index === 0 ? " is-active" : ""}`;
     article.innerHTML = `
-      <img src="${escapeHtml(banner.image)}" alt="${escapeHtml(banner.title)}">
+      <img src="${escapeHtml(banner.image)}" alt="${escapeHtml(String(banner.title || "").replace(/[|｜]/g, " "))}">
       <div class="slide-copy">
         <p>${escapeHtml(banner.label)}</p>
         <${index === 0 ? "h1" : "h2"}>${bannerTitleHtml(banner.title)}</${index === 0 ? "h1" : "h2"}>
