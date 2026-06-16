@@ -242,17 +242,24 @@ img {
 
 .category-strip {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-start;
   gap: 10px;
   width: min(1180px, 100%);
   margin: 0 auto;
-  padding: 0;
-  overflow: hidden;
+  padding: 0 0 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.category-strip::-webkit-scrollbar {
+  display: none;
 }
 
 .category-strip a {
   flex: 0 0 auto;
+  white-space: nowrap;
   padding: 10px 16px;
   border: 1px solid var(--line);
   border-radius: 8px;
