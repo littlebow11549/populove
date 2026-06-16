@@ -143,12 +143,16 @@ function renderContactInfo() {
   if (lineFloat) lineFloat.href = lineUrl(contact.line);
 }
 
-function bannerTitleHtml(title) {
-  const raw = String(title || "");
-  if (/[|｜]/.test(raw)) {
-    return raw.split(/[|｜]/).map((part) => escapeHtml(part.trim())).filter(Boolean).join("<br>");
+function bannerTitleHtml(title, title2) {
+  const line1 = String(title || "");
+  const line2 = String(title2 || "").trim();
+  if (line2) {
+    return `${escapeHtml(line1.trim())}<br>${escapeHtml(line2)}`;
   }
-  return escapeHtml(raw).replace(/([，、；,])/, "$1<br>");
+  if (/[|｜]/.test(line1)) {
+    return line1.split(/[|｜]/).map((part) => escapeHtml(part.trim())).filter(Boolean).join("<br>");
+  }
+  return escapeHtml(line1).replace(/([，、；,])/, "$1<br>");
 }
 function renderBanners() {
   if (!heroSlider || !sliderControls) return;
@@ -158,10 +162,10 @@ function renderBanners() {
     const article = document.createElement("article");
     article.className = `hero-slide${index === 0 ? " is-active" : ""}`;
     article.innerHTML = `
-      <img src="${escapeHtml(banner.image)}" alt="${escapeHtml(String(banner.title || "").replace(/[|｜]/g, " "))}">
+      <img src="${escapeHtml(banner.image)}" alt="${escapeHtml(`${banner.title || ""} ${banner.title2 || ""}`.replace(/[|｜]/g, " ").trim())}">
       <div class="slide-copy">
         <p>${escapeHtml(banner.label)}</p>
-        <${index === 0 ? "h1" : "h2"}>${bannerTitleHtml(banner.title)}</${index === 0 ? "h1" : "h2"}>
+        <${index === 0 ? "h1" : "h2"}>${bannerTitleHtml(banner.title, banner.title2)}</${index === 0 ? "h1" : "h2"}>
         <span>${escapeHtml(banner.text)}</span>
         ${index === 0 ? `<div class="slide-actions"><a class="button primary" href="#estimate"><svg class="icon"><use href="#i-calculator"></use></svg>費用估算</a><a class="button light" href="${lineUrl(readData(STORAGE.contact, defaultContact).line)}" target="_blank" rel="noopener"><svg class="icon"><use href="#i-message"></use></svg>LINE 詢價</a></div>` : ""}
       </div>`;
