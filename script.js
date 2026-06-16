@@ -143,6 +143,9 @@ function renderContactInfo() {
   if (lineFloat) lineFloat.href = lineUrl(contact.line);
 }
 
+function bannerTitleHtml(title) {
+  return escapeHtml(title).replace(/([，、；,])/, "$1<br>");
+}
 function renderBanners() {
   if (!heroSlider || !sliderControls) return;
   const banners = readData(STORAGE.banners, defaultBanners);
@@ -154,7 +157,7 @@ function renderBanners() {
       <img src="${escapeHtml(banner.image)}" alt="${escapeHtml(banner.title)}">
       <div class="slide-copy">
         <p>${escapeHtml(banner.label)}</p>
-        <${index === 0 ? "h1" : "h2"}>${escapeHtml(banner.title)}</${index === 0 ? "h1" : "h2"}>
+        <${index === 0 ? "h1" : "h2"}>${bannerTitleHtml(banner.title)}</${index === 0 ? "h1" : "h2"}>
         <span>${escapeHtml(banner.text)}</span>
         ${index === 0 ? `<div class="slide-actions"><a class="button primary" href="#estimate"><svg class="icon"><use href="#i-calculator"></use></svg>費用估算</a><a class="button light" href="${lineUrl(readData(STORAGE.contact, defaultContact).line)}" target="_blank" rel="noopener"><svg class="icon"><use href="#i-message"></use></svg>LINE 詢價</a></div>` : ""}
       </div>`;
