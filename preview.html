@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>POPULOVE 預覽中心</title>
+  <style>
+    :root {
+      --bg: #0d0d0e;
+      --panel: #1b1b1e;
+      --line: rgba(255, 255, 255, 0.12);
+      --orange: #ff7a1a;
+      --text: #f6f1ea;
+      --muted: #948b82;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 28px 16px 48px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255, 122, 26, 0.18), transparent 34%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Noto Sans TC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .wrap {
+      width: min(100%, 920px);
+      margin: 0 auto;
+      display: grid;
+      gap: 22px;
+      justify-items: center;
+    }
+
+    .head { text-align: center; }
+    .head h1 { margin: 0 0 8px; font-size: 24px; line-height: 1.3; }
+    .head p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .toolbar {
+      display: grid;
+      gap: 14px;
+      width: 100%;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+    }
+
+    .group { display: grid; gap: 8px; }
+    .group > span {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .chip {
+      min-height: 40px;
+      padding: 8px 16px;
+      border: 1px solid rgba(255, 122, 26, 0.35);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s ease, color .15s ease, border-color .15s ease;
+    }
+    .chip:hover { border-color: var(--orange); }
+    .chip[aria-pressed="true"] {
+      color: #fff;
+      background: linear-gradient(135deg, var(--orange), #d94c0d);
+      border-color: transparent;
+    }
+
+    .stage {
+      width: 100%;
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+    }
+
+    .meta { color: var(--muted); font-size: 13px; }
+
+    .frame {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: linear-gradient(180deg, #2a2a2f, #101012);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.5);
+      transition: width .25s ease;
+    }
+    .frame[data-device="desktop"] { border-radius: 16px; padding: 10px; }
+
+    .screen {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(255, 122, 26, 0.22);
+      border-radius: 22px;
+      background: #050505;
+    }
+    .frame[data-device="desktop"] .screen { border-radius: 10px; }
+
+    iframe { width: 100%; height: 100%; border: 0; background: #0d0d0e; display: block; }
+
+    .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .actions a {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 16px;
+      border: 1px solid rgba(255, 122, 26, 0.35);
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .actions a.primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--orange), #d94c0d);
+      border-color: transparent;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="head">
+      <h1>POPULOVE 預覽中心</h1>
+      <p>選擇頁面與裝置尺寸，直接在框內捲動檢查 RWD 效果。</p>
+    </div>
+
+    <section class="toolbar" aria-label="預覽設定">
+      <div class="group">
+        <span>頁面</span>
+        <div class="chips" id="pageChips"></div>
+      </div>
+      <div class="group">
+        <span>裝置</span>
+        <div class="chips" id="deviceChips"></div>
+      </div>
+    </section>
+
+    <section class="stage">
+      <p class="meta" id="meta"></p>
+      <div class="frame" id="frame" data-device="phone">
+        <div class="screen">
+          <iframe id="viewer" title="POPULOVE 頁面預覽"></iframe>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="primary" id="openFull" href="index.html" target="_blank" rel="noopener">在新分頁開啟完整頁面</a>
+        <a href="mobile-preview.html">舊版手機預覽</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const PAGES = [
+      { id: "index", label: "首頁", src: "index.html" },
+      { id: "smile", label: "微笑頁", src: "smile.html" },
+      { id: "admin", label: "後台", src: "admin.html" }
+    ];
+    const DEVICES = [
+      { id: "phone",   label: "手機",  w: 390,  h: 844,  ratio: "390 / 844" },
+      { id: "tablet",  label: "平板",  w: 768,  h: 1024, ratio: "768 / 1024" },
+      { id: "desktop", label: "桌機",  w: 900,  h: 600,  ratio: "16 / 10" }
+    ];
+
+    let page = PAGES[0];
+    let device = DEVICES[0];
+
+    const pageChips = document.getElementById("pageChips");
+    const deviceChips = document.getElementById("deviceChips");
+    const frame = document.getElementById("frame");
+    const viewer = document.getElementById("viewer");
+    const meta = document.getElementById("meta");
+    const openFull = document.getElementById("openFull");
+
+    function makeChips(container, items, getActive, onPick) {
+      container.innerHTML = "";
+      items.forEach(item => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chip";
+        btn.textContent = item.label;
+        btn.setAttribute("aria-pressed", String(item.id === getActive().id));
+        btn.addEventListener("click", () => onPick(item));
+        container.appendChild(btn);
+      });
+    }
+
+    function render() {
+      // size the frame to the chosen device, capped to viewport width
+      const maxW = Math.min(device.w, window.innerWidth - 40);
+      frame.dataset.device = device.id;
+      frame.style.width = maxW + "px";
+      const screen = frame.querySelector(".screen");
+      screen.style.aspectRatio = device.ratio;
+
+      if (viewer.getAttribute("src") !== page.src) viewer.setAttribute("src", page.src);
+      openFull.setAttribute("href", page.src);
+      meta.textContent = `${page.label} · ${device.label} (${device.w} × ${device.h})`;
+
+      makeChips(pageChips, PAGES, () => page, p => { page = p; render(); });
+      makeChips(deviceChips, DEVICES, () => device, d => { device = d; render(); });
+    }
+
+    window.addEventListener("resize", render);
+    render();
+  </script>
+</body>
+</html>
