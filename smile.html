@@ -1,0 +1,97 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>你今天 Populove 了沒?</title>
+  <meta name="description" content="每天看一張迷因圖，替自己補一點微笑能量。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="smile-body">
+  <svg aria-hidden="true" class="svg-sprite" width="0" height="0">
+    <defs>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></symbol>
+      <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 10h.01M16 10h.01"/><path d="M8 15c1.2 1.3 2.5 2 4 2s2.8-.7 4-2"/></symbol>
+      <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M8 10c0-1.7 1.8-3 4-3s4 1.3 4 3-1.8 3-4 3-4 1.3-4 3 1.8 3 4 3 4-1.3 4-3"/></symbol>
+      <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 16v3h14v-3"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M6 9a7 7 0 0 1 11.7-2.8L20 8"/><path d="M18 15a7 7 0 0 1-11.7 2.8L4 16"/></symbol>
+      <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.8 6.8-4.6"/><path d="m8.6 13.2 6.8 4.6"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></symbol>
+      <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></symbol>
+    </defs>
+  </svg>
+  <header class="smile-header">
+    <a class="brand" href="index.html#top"><img class="brand-logo" src="assets/populove-logo.svg" alt="POPULOVE"></a>
+    <a class="button ghost" href="index.html#top"><svg class="icon"><use href="#i-home"></use></svg>回團體服首頁</a>
+  </header>
+  <main class="smile-app">
+    <section class="smile-intro">
+      <h1>你今天 <span class="populove-poster">Populove</span> 了沒?</h1>
+      <span>意思是：你今天微笑了嗎？滑一張迷因圖，給自己一點可愛的能量。</span>
+    </section>
+    <section class="smile-filter-row" aria-label="迷因瀏覽控制">
+      <nav class="meme-tags" aria-label="迷因分類">
+        <button class="is-active" type="button" data-tag="hot">熱門</button>
+        <button type="button" data-tag="funny">搞笑</button>
+        <button type="button" data-tag="custom">自創</button>
+      </nav>
+      <div class="smile-wallet"><svg class="icon"><use href="#i-coin"></use></svg><strong id="coinCount">0</strong><span>Populove 幣</span></div>
+    </section>
+    <section class="meme-stage" aria-live="polite">
+      <button class="meme-nav prev" type="button" id="prevMeme" aria-label="上一張">‹</button>
+      <article class="meme-card" id="memeCard"></article>
+      <button class="meme-nav next" type="button" id="nextMeme" aria-label="下一張">›</button>
+    </section>
+    <p class="meme-hint">手機左右滑動切換圖片。可以上傳自己的圖；推廣給朋友一起 Populove。</p>
+    <section class="smile-tools" id="smileTools">
+      <label class="upload-meme-button" aria-label="上傳自己的圖" title="上傳自己的圖">
+        <input id="uploadMeme" type="file" accept="image/*,.gif">
+        <svg class="icon"><use href="#i-upload"></use></svg>
+      </label>
+      <button type="button" id="refreshBatch" aria-label="換一批" title="換一批"><svg class="icon"><use href="#i-refresh"></use></svg></button>
+      <button type="button" id="shareSmile" aria-label="推廣給朋友" title="推廣給朋友"><svg class="icon"><use href="#i-share"></use></svg></button>
+      <button type="button" id="copySmileLink" aria-label="複製連結" title="複製連結"><svg class="icon"><use href="#i-copy"></use></svg></button>
+      <button type="button" id="openPromos" aria-label="推薦連結" title="推薦連結"><svg class="icon"><use href="#i-link"></use></svg></button>
+      <span class="smile-tool-status" id="smileToolStatus" aria-live="polite"></span>
+    </section>
+    <section class="promo-panel" id="promoPanel" hidden aria-label="推薦連結"></section>
+    <section class="member-modal" id="memberModal" hidden aria-label="會員註冊">
+      <form class="member-card" id="memberForm">
+        <strong>註冊會員後即可上傳</strong>
+        <label>電話<input name="phone" type="tel" required placeholder="請輸入電話"></label>
+        <label>密碼<input name="password" type="password" required minlength="4" placeholder="請輸入密碼"></label>
+        <label>職業類型<input name="job" type="text" required placeholder="例如：學生 / 設計 / 業務"></label>
+        <label>性別<select name="gender" required><option value="">請選擇</option><option>女</option><option>男</option><option>不透露</option></select></label>
+        <div class="member-actions"><button type="submit">完成註冊</button><button type="button" id="closeMemberModal">取消</button></div>
+      </form>
+    </section>
+    <section class="upload-cropper" id="uploadCropper" hidden>
+      <div class="upload-cropper-card">
+        <strong>調整圖片範圍</strong>
+        <canvas id="uploadCropCanvas" width="720" height="720"></canvas>
+        <label>放大縮小<input id="uploadCropZoom" type="range" min="1" max="3" step="0.01" value="1"></label>
+        <label>左右位置<input id="uploadCropX" type="range" min="0" max="100" step="1" value="50"></label>
+        <label>上下位置<input id="uploadCropY" type="range" min="0" max="100" step="1" value="50"></label>
+        <div class="member-actions"><button type="button" id="applyUploadCrop">套用上傳</button><button type="button" id="cancelUploadCrop">取消</button></div>
+      </div>
+    </section>
+  </main>
+  <script src="site-data.js"></script>
+  <script src="smile.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

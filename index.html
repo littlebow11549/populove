@@ -1,0 +1,375 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>POPULOVE 客製化團體服 | 班服、制服、活動服、品牌周邊</title>
+  <meta name="description" content="POPULOVE 提供客製化團體服、班服、公司制服、活動 T-Shirt、POLO 衫、帽 T、刺繡與印刷加工服務。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-calculator" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0 5 5L11 20a2.8 2.8 0 0 1-4-4l8.7-8.7Z"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 10v6"/><path d="M12 7h.01"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.7 19.7 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.7 19.7 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 3a2 2 0 0 1-.6 1.8L7.7 9.8a16 16 0 0 0 6.5 6.5l1.3-1.3a2 2 0 0 1 1.8-.6l3 .5a2 2 0 0 1 1.7 2Z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8 4 5 6 2 8l3 5 2-1v8h10v-8l2 1 3-5-3-2-3-2a4 4 0 0 1-8 0Z"/></symbol>
+    <symbol id="i-polo" viewBox="0 0 24 24"><path d="M8 4 5 6 2 8l3 5 2-1v8h10v-8l2 1 3-5-3-2-3-2a4 4 0 0 1-8 0Z"/><path d="m9 5 3 4 3-4"/><path d="M10 10h4"/></symbol>
+    <symbol id="i-hoodie" viewBox="0 0 24 24"><path d="M7 8a5 5 0 0 1 10 0l3 3-3 4-1-1v7H8v-7l-1 1-3-4Z"/><path d="M9 8c1.5 1 4.5 1 6 0"/><path d="M10 14v3M14 14v3"/></symbol>
+    <symbol id="i-jacket" viewBox="0 0 24 24"><path d="M8 4 5 6 3 20h7V9"/><path d="M16 4l3 2 2 14h-7V9"/><path d="M12 9v12"/><path d="M9 4h6"/></symbol>
+    <symbol id="i-apron" viewBox="0 0 24 24"><path d="M9 3h6l1 5 3 13H5L8 8Z"/><path d="M9 3c0 3 6 3 6 0"/><path d="M8 13h8"/></symbol>
+    <symbol id="i-collar" viewBox="0 0 24 24"><path d="M8 4h8l3 16H5Z"/><path d="m8 4 4 6 4-6"/><path d="M12 10v10"/><path d="M8 12h2M14 12h2"/></symbol>
+    <symbol id="i-pants" viewBox="0 0 24 24"><path d="M8 3h8l1 18h-4l-1-10-1 10H7Z"/><path d="M8 7h8"/><path d="M12 7v4"/></symbol>
+    <symbol id="i-vest" viewBox="0 0 24 24"><path d="M8 4h3l1 4 1-4h3l3 17H5Z"/><path d="M9 4v7"/><path d="M15 4v7"/><path d="M9 14h6"/></symbol>
+    <symbol id="i-kids" viewBox="0 0 24 24"><path d="M8 6 5 8l-2 3 3 3 1-1v7h10v-7l1 1 3-3-2-3-3-2a4 4 0 0 1-8 0Z"/><path d="M9 20v-4h6v4"/></symbol>
+    <symbol id="i-sweatshirt" viewBox="0 0 24 24"><path d="M8 5 5 7 3 11l3 3 1-1v8h10v-8l1 1 3-3-2-4-3-2a4 4 0 0 1-8 0Z"/><path d="M9 10h6"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 8h12l1 13H5Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+    <symbol id="i-cap" viewBox="0 0 24 24"><path d="M3 14c2-4 6-6 10-6s7 2 8 6"/><path d="M3 14c5 3 10 3 18 0"/><path d="M15 14c3 0 5 1 6 3"/></symbol>
+    <symbol id="i-cup" viewBox="0 0 24 24"><path d="M6 3h10v12a5 5 0 0 1-10 0Z"/><path d="M16 6h2a3 3 0 0 1 0 6h-2"/><path d="M5 21h12"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 4a3 3 0 0 1 6 0"/><path d="M9 12h6M9 16h4"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 15a1.8 1.8 0 0 0 .4 2l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1.8 1.8 0 0 0-2-.4 1.8 1.8 0 0 0-1 1.6V21a2 2 0 0 1-4 0v-.1a1.8 1.8 0 0 0-1-1.6 1.8 1.8 0 0 0-2 .4l-.1.1a2 2 0 0 1-2.8-2.8l.1-.1a1.8 1.8 0 0 0 .4-2 1.8 1.8 0 0 0-1.6-1H3a2 2 0 0 1 0-4h.1a1.8 1.8 0 0 0 1.6-1 1.8 1.8 0 0 0-.4-2l-.1-.1a2 2 0 0 1 2.8-2.8l.1.1a1.8 1.8 0 0 0 2 .4 1.8 1.8 0 0 0 1-1.6V3a2 2 0 0 1 4 0v.1a1.8 1.8 0 0 0 1 1.6 1.8 1.8 0 0 0 2-.4l.1-.1a2 2 0 0 1 2.8 2.8l-.1.1a1.8 1.8 0 0 0-.4 2 1.8 1.8 0 0 0 1.6 1H21a2 2 0 0 1 0 4h-.1a1.8 1.8 0 0 0-1.5 1Z"/></symbol>
+    <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 10h.01M16 10h.01"/><path d="M8 15c1.2 1.3 2.5 2 4 2s2.8-.7 4-2"/><path d="M19 4 21 2"/><path d="m3 22 2-2"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h3"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h12v10H3Z"/><path d="M15 10h4l2 3v3h-6Z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 16 9 5 9-5"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2 9 9l-7 3 7 3 3 7 3-7 7-3-7-3Z"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-5-5-7-5-12-3 2-6 6-6 10 0 1.5.5 3 1.5 4-2-.5-3-2-3.5-3.5A7.2 7.2 0 0 0 12 22Z"/></symbol>
+    <symbol id="i-needle" viewBox="0 0 24 24"><path d="M20 4 9 15"/><path d="M14 4h6v6"/><path d="M5 19c2 2 5 2 7 0"/><path d="M9 15 5 19"/></symbol>
+    <symbol id="i-hash" viewBox="0 0 24 24"><path d="M5 9h14M4 15h14M10 3 8 21M16 3l-2 18"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5Z"/><path d="M16 3v4h4"/><path d="M8 12h8M8 16h6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+  </svg>
+
+  <header class="topbar">
+    <div class="topbar-inner" id="contactTopbar">
+      <a href="https://line.me/ti/p/~derrick00" target="_blank" rel="noopener"><svg class="icon"><use href="#i-message"></use></svg>LINE：derrick00</a>
+      <span><svg class="icon"><use href="#i-clock"></use></svg>週一至週五 10:00-18:00</span>
+      <a href="tel:0289530680"><svg class="icon"><use href="#i-phone"></use></svg>02-8953-0680</a>
+      <a href="mailto:derrick.populove@gmail.com"><svg class="icon"><use href="#i-mail"></use></svg>derrick.populove@gmail.com</a>
+    </div>
+  </header>
+
+  <nav class="site-header" aria-label="主要導覽">
+    <a class="brand" href="#top" aria-label="POPULOVE 首頁">
+      <img class="brand-logo" src="assets/populove-logo.svg" alt="POPULOVE">
+    </a>
+    <button class="nav-toggle" type="button" aria-label="開啟選單" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="site-nav">
+      <a href="#top"><svg class="icon"><use href="#i-home"></use></svg>首頁</a>
+      <a href="#estimate"><svg class="icon"><use href="#i-calculator"></use></svg>費用估算</a>
+      <a href="#process"><svg class="icon"><use href="#i-wrench"></use></svg>加工說明</a>
+      <a href="#contact"><svg class="icon"><use href="#i-info"></use></svg>關於我們</a>
+      <a href="#products"><svg class="icon"><use href="#i-bag"></use></svg>商品一覽</a>
+      <button class="category-toggle" type="button" id="categoryToggle" aria-expanded="false" aria-controls="categoryPanel">
+        <span><svg class="icon"><use href="#i-grid"></use></svg>產品分類</span>
+        <i aria-hidden="true"></i>
+      </button>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="category-panel" id="categoryPanel">
+      <button class="category-mobile-toggle" type="button" id="categoryMobileToggle" aria-expanded="false" aria-controls="categoryPanel">
+        <span><svg class="icon"><use href="#i-grid"></use></svg>產品分類</span>
+        <i aria-hidden="true"></i>
+      </button>
+      <div class="category-strip" aria-label="產品分類">
+        <a href="#products"><svg class="icon"><use href="#i-shirt"></use></svg>T恤</a>
+        <a href="#products"><svg class="icon"><use href="#i-polo"></use></svg>短袖POLO衫</a>
+        <a href="#products"><svg class="icon"><use href="#i-polo"></use></svg>長袖POLO衫</a>
+        <a href="#products"><svg class="icon"><use href="#i-hoodie"></use></svg>連帽上衣</a>
+        <a href="#products"><svg class="icon"><use href="#i-jacket"></use></svg>外套</a>
+        <a href="#products"><svg class="icon"><use href="#i-sweatshirt"></use></svg>大學T</a>
+        <a href="#products"><svg class="icon"><use href="#i-apron"></use></svg>圍裙</a>
+        <a href="#products"><svg class="icon"><use href="#i-collar"></use></svg>襯衫</a>
+        <a href="#products"><svg class="icon"><use href="#i-pants"></use></svg>褲子</a>
+        <a href="#products"><svg class="icon"><use href="#i-cap"></use></svg>帽子</a>
+        <a href="#products"><svg class="icon"><use href="#i-vest"></use></svg>背心</a>
+        <a href="#products"><svg class="icon"><use href="#i-kids"></use></svg>兒童專區</a>
+        <a href="#products"><svg class="icon"><use href="#i-bag"></use></svg>袋子</a>
+        <a href="#products"><svg class="icon"><use href="#i-cup"></use></svg>杯子</a>
+      </div>
+    </section>
+
+    <section class="hero-slider" aria-label="主視覺輪播" id="heroSlider">
+      <article class="hero-slide is-active">
+        <img src="assets/hero-teamwear.png" alt="POPULOVE 團體服主視覺">
+        <div class="slide-copy">
+          <p>客製化團體服專門店</p>
+          <h1>把團隊的樣子，做成每個人都想穿的衣服。</h1>
+          <span>企業制服、班服、活動服、品牌周邊，一對一整理款式與報價。</span>
+          <div class="slide-actions">
+            <a class="button primary" href="#estimate"><svg class="icon"><use href="#i-calculator"></use></svg>費用估算</a>
+            <a class="button light" href="https://line.me/ti/p/~derrick00" target="_blank" rel="noopener"><svg class="icon"><use href="#i-message"></use></svg>LINE 詢價</a>
+          </div>
+        </div>
+      </article>
+      <article class="hero-slide">
+        <img src="assets/banner-populove-fashion.png" alt="POPULOVE 橘黑時尚團體服 banner">
+        <div class="slide-copy">
+          <p>Fashion Teamwear</p>
+          <h2>多色團體服，讓每個團隊都有自己的色號。</h2>
+          <span>T 恤、POLO、帽 T、外套與周邊品項，依照用途挑選最適合的款式。</span>
+        </div>
+      </article>
+      <article class="hero-slide">
+        <img src="assets/banner-corporate-uniform.png" alt="POPULOVE 企業制服與團隊服 banner">
+        <div class="slide-copy">
+          <p>Corporate Uniform</p>
+          <h2>專業制服生產，讓品牌形象更一致。</h2>
+          <span>企業 POLO、門市制服、展場工作服，印刷、刺繡與配色一次整理。</span>
+        </div>
+      </article>
+      <article class="hero-slide">
+        <img src="assets/banner-event-teamwear.png" alt="POPULOVE 活動班服與社團服 banner">
+        <div class="slide-copy">
+          <p>Event & Class Shirts</p>
+          <h2>一件也能開始，少量客製更簡單。</h2>
+          <span>來圖訂製、少量印刷、活動快閃商品，協助你把想法做成可穿的成品。</span>
+        </div>
+      </article>
+      <div class="slider-controls" aria-label="輪播控制" id="sliderControls">
+        <button type="button" data-slide="0" class="is-active" aria-label="第 1 張 banner"><i></i></button>
+        <button type="button" data-slide="1" aria-label="第 2 張 banner"><i></i></button>
+        <button type="button" data-slide="2" aria-label="第 3 張 banner"><i></i></button>
+        <button type="button" data-slide="3" aria-label="第 4 張 banner"><i></i></button>
+      </div>
+    </section>
+
+    <section class="intro-panel">
+      <div class="intro-text">
+        <p class="section-label">About POPULOVE</p>
+        <h2>客製化團體服，從挑款、圖稿、估價到交件都有人陪你確認。</h2>
+        <p>我們服務企業、學校、活動單位、品牌主理人與社團組織，依照預算、用途、件數與交期建議適合的衣服與加工方式。</p>
+      </div>
+      <div class="intro-card">
+        <svg class="card-icon"><use href="#i-calculator"></use></svg>
+        <strong>透明估價</strong>
+        <span>商品、加工、數量與交期分開確認</span>
+      </div>
+      <div class="intro-card">
+        <svg class="card-icon"><use href="#i-message"></use></svg>
+        <strong>專人服務</strong>
+        <span>從圖稿到生產細節都協助整理</span>
+      </div>
+      <div class="intro-card">
+        <svg class="card-icon"><use href="#i-grid"></use></svg>
+        <strong>多元品項</strong>
+        <span>T恤、POLO、帽T、圍裙、帽子、袋子</span>
+      </div>
+    </section>
+
+    <section class="section" id="process">
+      <div class="section-head">
+        <p class="section-label">Order Flow</p>
+        <h2>團體服訂購流程</h2>
+        <p>簡單 5 步驟，把想法變成可以穿出去的成品。</p>
+      </div>
+      <div class="flow-grid" id="flowGrid">
+        <article>
+          <span><svg class="icon"><use href="#i-search"></use></svg>01</span>
+          <h3>挑選產品</h3>
+          <p>確認款式、尺寸、顏色、布料與穿著情境。</p>
+          <a href="#products">商品一覽<svg class="icon"><use href="#i-arrow"></use></svg></a>
+        </article>
+        <article>
+          <span><svg class="icon"><use href="#i-message"></use></svg>02</span>
+          <h3>討論細節</h3>
+          <p>整理印刷位置、圖稿尺寸、加工方式與交期。</p>
+          <a href="#process-detail">加工說明<svg class="icon"><use href="#i-arrow"></use></svg></a>
+        </article>
+        <article>
+          <span><svg class="icon"><use href="#i-clipboard"></use></svg>03</span>
+          <h3>確認訂單</h3>
+          <p>提供示意圖與明細，確認後安排製作。</p>
+          <a href="#estimate">填寫需求<svg class="icon"><use href="#i-arrow"></use></svg></a>
+        </article>
+        <article>
+          <span><svg class="icon"><use href="#i-card"></use></svg>04</span>
+          <h3>支付款項</h3>
+          <p>確認訂金或尾款方式，保留生產排程。</p>
+          <a href="#estimate">費用估算<svg class="icon"><use href="#i-arrow"></use></svg></a>
+        </article>
+        <article>
+          <span><svg class="icon"><use href="#i-truck"></use></svg>05</span>
+          <h3>製作出貨</h3>
+          <p>完成品檢後寄出，也可依需求預約取件。</p>
+          <a href="#contact">訂單查詢<svg class="icon"><use href="#i-arrow"></use></svg></a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="process-detail">
+      <div class="section-head">
+        <p class="section-label">Print Method</p>
+        <h2>多種加工方式</h2>
+      </div>
+      <div class="method-grid">
+        <article>
+          <div class="method-icon screen"><svg class="icon"><use href="#i-layers"></use></svg></div>
+          <h3>網版印刷</h3>
+          <p>適合大量、少色、耐洗需求高的團體服。</p>
+        </article>
+        <article>
+          <div class="method-icon dtf"><svg class="icon"><use href="#i-spark"></use></svg></div>
+          <h3>DTF 轉印</h3>
+          <p>適合彩色圖案、複雜線條與多品項混搭。</p>
+        </article>
+        <article>
+          <div class="method-icon heat"><svg class="icon"><use href="#i-flame"></use></svg></div>
+          <h3>熱轉印</h3>
+          <p>少量、照片感、活動限定款都能彈性製作。</p>
+        </article>
+        <article>
+          <div class="method-icon stitch"><svg class="icon"><use href="#i-needle"></use></svg></div>
+          <h3>電腦刺繡</h3>
+          <p>適合制服、POLO、帽子與質感品牌識別。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section soft" id="products">
+      <div class="section-head inline">
+        <div>
+          <p class="section-label">Popular Items</p>
+          <h2>人氣商品</h2>
+        </div>
+        <a class="text-link" href="#estimate">索取完整報價<svg class="icon"><use href="#i-arrow"></use></svg></a>
+      </div>
+      <div class="product-carousel">
+        <button class="carousel-arrow prev" type="button" aria-label="上一組商品" data-product-prev>
+          <svg class="icon"><use href="#i-arrow"></use></svg>
+        </button>
+        <div class="product-grid" id="productCarousel">
+          <article><div class="product-art"><img src="assets/product-blank-white-tshirt.png" alt="白色空白 T 恤"></div><h3>頂級柔棉成人 T 恤</h3></article>
+          <article><div class="product-art"><img src="assets/product-blank-white-tshirt.png" alt="白色空白 T 恤"></div><h3>寬版落肩 T 恤</h3></article>
+          <article><div class="product-art"><img src="assets/product-blank-white-tshirt.png" alt="白色空白 T 恤"></div><h3>重磅口袋 T 恤</h3></article>
+          <article><div class="product-art"><img src="assets/product-blank-white-tshirt.png" alt="白色空白 T 恤"></div><h3>抗 UV 機能 T 恤</h3></article>
+          <article><div class="product-art"><img src="assets/product-blank-white-tshirt.png" alt="白色空白 T 恤"></div><h3>精梳棉短袖 POLO 衫</h3></article>
+          <article><div class="product-art"><img src="assets/product-blank-white-tshirt.png" alt="白色空白 T 恤"></div><h3>刷毛帽 T</h3></article>
+          <article><div class="product-art"><img src="assets/product-blank-white-tshirt.png" alt="白色空白 T 恤"></div><h3>連帽拉鍊外套</h3></article>
+          <article><div class="product-art"><img src="assets/product-blank-white-tshirt.png" alt="白色空白 T 恤"></div><h3>掛脖帆布工作圍裙</h3></article>
+          <article><div class="product-art"><img src="assets/product-blank-white-tshirt.png" alt="白色空白 T 恤"></div><h3>棉質老帽</h3></article>
+          <article><div class="product-art"><img src="assets/product-blank-white-tshirt.png" alt="白色空白 T 恤"></div><h3>帆布托特包</h3></article>
+        </div>
+        <button class="carousel-arrow next" type="button" aria-label="下一組商品" data-product-next>
+          <svg class="icon"><use href="#i-arrow"></use></svg>
+        </button>
+      </div>
+    </section>
+
+    <section class="estimate" id="estimate">
+      <div>
+        <p class="section-label">Estimate</p>
+        <h2>費用估算</h2>
+        <p>填寫基本需求後，頁面會先幫你整理成詢價文字。之後可以接 LINE、Email 或 Google 表單。</p>
+      </div>
+      <form class="quote-form" id="quoteForm">
+        <label>
+          <span><svg class="icon"><use href="#i-shirt"></use></svg>品項</span>
+          <select name="product">
+            <option>T恤</option>
+            <option>POLO衫</option>
+            <option>帽T / 大學T</option>
+            <option>外套</option>
+            <option>圍裙 / 帽子 / 袋子</option>
+          </select>
+        </label>
+        <label>
+          <span><svg class="icon"><use href="#i-hash"></use></svg>件數</span>
+          <input name="quantity" type="number" min="1" placeholder="例如：80" required>
+        </label>
+        <label>
+          <span><svg class="icon"><use href="#i-wrench"></use></svg>加工方式</span>
+          <select name="method">
+            <option>需要建議</option>
+            <option>網版印刷</option>
+            <option>DTF 轉印</option>
+            <option>熱轉印</option>
+            <option>電腦刺繡</option>
+          </select>
+        </label>
+        <label>
+          <span><svg class="icon"><use href="#i-user"></use></svg>聯絡方式</span>
+          <input name="contact" type="text" placeholder="LINE ID / 電話 / Email" required>
+        </label>
+        <label class="wide">
+          <span><svg class="icon"><use href="#i-note"></use></svg>補充需求</span>
+          <textarea name="message" rows="4" placeholder="交期、預算、顏色、印刷位置、是否有圖稿"></textarea>
+        </label>
+        <button class="button primary wide" type="submit"><svg class="icon"><use href="#i-clipboard"></use></svg>整理詢價內容</button>
+        <p class="form-result" id="formResult" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="section-head">
+        <p class="section-label">Contact</p>
+        <h2>線上諮詢</h2>
+      </div>
+      <div class="contact-grid" id="contactGrid">
+        <article>
+          <a class="contact-card-link" href="https://line.me/ti/p/~derrick00" target="_blank" rel="noopener" aria-label="加入 LINE 好友 derrick00">
+            <svg class="card-icon"><use href="#i-message"></use></svg>
+            <strong>LINE 線上諮詢</strong>
+            <p>derrick00</p>
+          </a>
+        </article>
+        <article>
+          <svg class="card-icon"><use href="#i-phone"></use></svg>
+          <strong>專人專線</strong>
+          <p>02-8953-0680<br>週一至週五 10:00-18:00</p>
+        </article>
+        <article>
+          <svg class="card-icon"><use href="#i-mail"></use></svg>
+          <strong>客服信箱</strong>
+          <p>derrick.populove@gmail.com<br>週一至週五 10:00-18:00</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <strong>POPULOVE 客製化團體服</strong>
+    <span>Powered by POPULOVE Studio</span>
+    <a class="admin-entry" href="admin.html" aria-label="網站設定"><svg class="icon"><use href="#i-settings"></use></svg>設定</a>
+  </footer>
+
+  <a class="smile-float" href="smile.html" aria-label="進來笑一下"><img src="assets/populove-bear-icon.svg" alt="進來笑一下"><span>進來<br>笑一下</span></a>
+  <div class="promo-float-wrap">
+    <button class="promo-float" type="button" id="promoFloat" aria-expanded="false" aria-controls="promoFloatPanel"><svg class="icon"><use href="#i-arrow"></use></svg><span>推廣</span></button>
+    <div class="promo-float-panel" id="promoFloatPanel" hidden></div>
+  </div>
+  <a class="line-float" href="https://line.me/ti/p/~derrick00" target="_blank" rel="noopener" aria-label="加入 LINE 好友 derrick00"><svg class="icon"><use href="#i-message"></use></svg><span>LINE</span></a>
+  <script src="site-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
