@@ -158,6 +158,11 @@ function renderBanners() {
         <span>${escapeHtml(banner.text)}</span>
         ${index === 0 ? `<div class="slide-actions"><a class="button primary" href="#estimate"><svg class="icon"><use href="#i-calculator"></use></svg>費用估算</a><a class="button light" href="${lineUrl(readData(STORAGE.contact, defaultContact).line)}" target="_blank" rel="noopener"><svg class="icon"><use href="#i-message"></use></svg>LINE 詢價</a></div>` : ""}
       </div>`;
+    const copy = article.querySelector(".slide-copy");
+    if (copy) {
+      if (banner.titleSize) copy.style.setProperty("--hero-title-size", `${Number(banner.titleSize)}px`);
+      if (banner.textSize) copy.style.setProperty("--hero-text-size", `${Number(banner.textSize)}px`);
+    }
     heroSlider.insertBefore(article, sliderControls);
   });
   sliderControls.innerHTML = banners.map((banner, index) => `<button type="button" data-slide="${index}" class="${index === 0 ? "is-active" : ""}" aria-label="第 ${index + 1} 張 banner"><i></i></button>`).join("");
