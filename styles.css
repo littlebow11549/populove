@@ -1392,10 +1392,21 @@ h3 {
   font-size: 18px;
   font-weight: 1000;
   cursor: grab;
+  touch-action: none;
+  user-select: none;
 }
 
 .drag-handle:active {
   cursor: grabbing;
+}
+
+.admin-product.is-dragging {
+  opacity: 0.6;
+}
+
+.admin-product.is-drop-target {
+  outline: 2px dashed rgba(255, 122, 26, 0.9);
+  outline-offset: -2px;
 }
 
 .admin-product[draggable="true"] {
