@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+/*
+  POPULOVE 設計變數（單一來源）。
+  這裡是「設計 token」集中地，取代舊版 styles.css 那種互相覆寫的 !important。
+  後續所有顏色／字體都從這裡取用，不要在元件裡寫死色碼。
+*/
+@theme {
+  /* 介面 */
+  --color-base: #101014;
+  --color-surface: #16161b;
+  --color-border: rgba(255, 255, 255, 0.14);
+  --color-ink: #fffaf2;
+  --color-muted: rgba(255, 250, 242, 0.7);
+
+  /* 品牌色 */
+  --color-brand: #ffb12a;
+  --color-brand-strong: #ff7a1a;
+  --color-brand-soft: #ffe89b;
+
+  /* 字體：採用系統字型堆疊（含中文），讓建置不依賴外部字型下載 */
+  --font-sans:
+    "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", system-ui,
+    -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-base);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
