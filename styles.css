@@ -4970,7 +4970,9 @@ h3 {
   }
 
   #versionHistoryList .version-delete-inline {
-    display: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
