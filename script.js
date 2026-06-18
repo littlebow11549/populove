@@ -364,15 +364,7 @@ window.addEventListener("storage", (event) => {
   if ([STORAGE.products, STORAGE.banners, STORAGE.contact, STORAGE.contactCards, STORAGE.flow, STORAGE.smile, STORAGE.promos, STORAGE.categories].includes(event.key)) location.reload();
 });
 
-renderContactInfo();
-renderBanners();
-renderFlow();
-renderContactCards();
-renderProducts();
-renderCategories();
-renderSmileEntry();
-renderPromoFloat();
-startSlider();
+[renderContactInfo, renderBanners, renderFlow, renderContactCards, renderProducts, renderCategories, renderSmileEntry, renderPromoFloat, startSlider].forEach((fn) => { try { fn(); } catch (error) { console.warn("init error", error); } });
 
 
 
