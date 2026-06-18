@@ -4788,20 +4788,12 @@ h3 {
 /* Admin version history: one version per horizontal row */
 .version-swipe {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 8px;
-  touch-action: pan-y;
 }
 
 .version-delete {
-  position: absolute;
-  inset: 0 0 0 auto;
-  width: 108px;
-  color: #fffaf2;
-  border: 0;
-  background: linear-gradient(180deg, #f04438, #991b1b);
-  font-weight: 950;
-  cursor: pointer;
+  display: none;
 }
 
 #versionHistoryList .version-row {
@@ -4932,10 +4924,21 @@ h3 {
   }
 
   #versionHistoryList .version-row {
-    grid-template-columns: 58px minmax(0, 1fr) 82px !important;
+    grid-template-columns: 58px minmax(0, 1fr) !important;
     gap: 10px;
     min-height: 76px;
     padding: 10px;
+  }
+
+  #versionHistoryList .version-row .admin-row-actions {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  #versionHistoryList .version-row .admin-row-actions button,
+  #versionHistoryList .version-row .version-lock-badge {
+    flex: 1 1 0;
+    min-width: 0;
   }
 
   #versionHistoryList .admin-icon-pill {

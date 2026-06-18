@@ -173,6 +173,7 @@ loginForm.addEventListener("submit", (event)=>{event.preventDefault(); const dat
 logoutButton.addEventListener("click",()=>{sessionStorage.removeItem(ADMIN_SESSION_KEY); setVisible(false);});
 function restoreInitialVersion(){recordVersionSnapshot("還原初始版本前",true); suppressVersionSnapshot=true; const restoredAt=Date.now(); const payload=initialUnsetProductPayload(); Object.entries(payload).forEach(([key,value])=>{if(key.endsWith("UpdatedAt"))return; localStorage.setItem(key,JSON.stringify(value)); localStorage.setItem(`${key}UpdatedAt`,String(restoredAt));}); localStorage.setItem(PUBLISHED_VERSION_KEY,String(publishedSiteVersion()||restoredAt)); suppressVersionSnapshot=false; renderAll(); status("#versionStatus","已還原商品未設定版，既有可回復版本已保留。");}
 resetAll?.addEventListener("click",restoreInitialVersion);
+document.querySelector("#reloadPublished")?.addEventListener("click",()=>{ if(!window.confirm("這會清除這個瀏覽器的後台暫存，改用正式站（site-data.js）的最新內容。這個瀏覽器尚未匯出的修改會消失，確定要重新載入嗎？"))return; Object.values(STORAGE).forEach((key)=>{try{localStorage.removeItem(key);localStorage.removeItem(`${key}UpdatedAt`);}catch(error){}}); try{localStorage.removeItem(PUBLISHED_VERSION_KEY);localStorage.removeItem("populoveGiphyMemeCache");}catch(error){} location.reload(); });
 function exportPublishedData(){
   recordVersionSnapshot("發布前快照", true);
   const siteVersion = Date.now();
