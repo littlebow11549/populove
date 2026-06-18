@@ -97,15 +97,19 @@ function publishedSiteVersion() {
   return Number(meta.siteVersion || Math.max(0, ...times));
 }
 function syncPublishedData(keys) {
-  const version = publishedSiteVersion();
-  if (!version || Number(localStorage.getItem(PUBLISHED_VERSION_KEY) || 0) >= version) return;
-  keys.forEach((key) => {
-    if (Object.prototype.hasOwnProperty.call(window.POPULOVE_SITE_DATA || {}, key)) {
-      localStorage.setItem(key, JSON.stringify(window.POPULOVE_SITE_DATA[key]));
-      localStorage.setItem(`${key}UpdatedAt`, String(publishedTime(key) || version));
-    }
-  });
-  localStorage.setItem(PUBLISHED_VERSION_KEY, String(version));
+  try {
+    const version = publishedSiteVersion();
+    if (!version || Number(localStorage.getItem(PUBLISHED_VERSION_KEY) || 0) >= version) return;
+    keys.forEach((key) => {
+      if (Object.prototype.hasOwnProperty.call(window.POPULOVE_SITE_DATA || {}, key)) {
+        try {
+          localStorage.setItem(key, JSON.stringify(window.POPULOVE_SITE_DATA[key]));
+          localStorage.setItem(`${key}UpdatedAt`, String(publishedTime(key) || version));
+        } catch (error) {}
+      }
+    });
+    try { localStorage.setItem(PUBLISHED_VERSION_KEY, String(version)); } catch (error) {}
+  } catch (error) {}
 }
 function readData(key, fallback) {
   let data = null;
