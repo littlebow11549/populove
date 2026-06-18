@@ -5011,6 +5011,14 @@ h3 {
   flex-direction: column;
   align-items: flex-end;
   gap: 14px;
+  pointer-events: none;
+}
+
+/* 只有按鈕本身可點，容器空白處讓點擊穿透（避免擋到「設定」等底下連結） */
+.float-stack .smile-float,
+.float-stack .line-float,
+.float-stack .float-link {
+  pointer-events: auto;
 }
 
 /* 笑一下與 LINE 改由 .float-stack 排版，取消舊有固定定位 */
