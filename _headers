@@ -1,0 +1,14 @@
+# 讓 HTML 永遠抓最新（避免手機快取住舊版後台/首頁）
+# JS/CSS 仍可快取，靠檔名後的 ?v= 版本號更新。
+/
+  Cache-Control: no-store
+/index.html
+  Cache-Control: no-store
+/admin.html
+  Cache-Control: no-store
+/smile.html
+  Cache-Control: no-store
+/preview.html
+  Cache-Control: no-store
+/mobile-preview.html
+  Cache-Control: no-store
