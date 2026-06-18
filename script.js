@@ -5,7 +5,7 @@
   contactCards: "populoveContactCards",
   flow: "populoveOrderFlow",
   smile: "populoveSmileEntry",
-  promos: "populovePromoLinks",
+  floatButtons: "populoveFloatButtons",
   categories: "populoveProductCategories"
 };
 const PUBLISHED_VERSION_KEY = "populovePublishedVersionSite";
@@ -66,11 +66,10 @@ const defaultBanners = [
   { id: "b4", image: "assets/banner-event-teamwear.png", label: "Event & Class Shirts", title: "一件也能開始，少量客製更簡單。", text: "來圖訂製、少量印刷、活動快閃商品，協助你把想法做成可穿的成品。" }
 ];
 const defaultContact = { line: "derrick00", phone: "02-8953-0680", email: "derrick.populove@gmail.com", hours: "週一至週五 10:00-18:00" };
-const defaultSmileEntry = { label: "進來\n笑一下", href: "smile.html", image: "assets/populove-bear-icon.svg" };
-const defaultPromoLinks = [
-  { title: "奇幻角色生成器", href: "https://character-prompt-generator.netlify.app/", enabled: true },
-  { title: "翊軒酒莊", href: "https://godenwine.com/", enabled: true },
-  { title: "", href: "", enabled: false }
+const defaultSmileEntry = { label: "進來\n笑一下", href: "smile.html", image: "assets/populove-bear-icon.svg", enabled: true };
+const defaultFloatButtons = [
+  { id: "fb1", text: "奇幻角色生成器", href: "https://character-prompt-generator.netlify.app/", color: "#ff8a1f", hidden: false, enabled: true },
+  { id: "fb2", text: "翊軒酒莊", href: "https://godenwine.com/", color: "#7a5cff", hidden: false, enabled: true }
 ];
 const defaultContactCards = [
   { id: "c1", icon: "i-message", title: "LINE 線上諮詢", text: "derrick00", href: "https://line.me/ti/p/~derrick00" },
@@ -216,7 +215,28 @@ function renderContactCards() {
 function normalizeSmileEntry(entry) {
   const image = !entry.image || entry.image.includes("media.giphy.com/media/111ebonMs90YLu") ? defaultSmileEntry.image : entry.image;
   const label = !entry.label || ["笑一下", "你今天\\nPopulove\\n了沒?", "你今天\nPopulove\n了沒?"].includes(entry.label) ? defaultSmileEntry.label : entry.label;
-  return { ...entry, label, image };
+  const enabled = entry.enabled !== false;
+  return { ...entry, label, image, enabled };
+}
+function normalizeFloatButtons(items) {
+  return (Array.isArray(items) ? items : []).slice(0, 2).map((item, index) => ({
+    id: item && item.id ? item.id : `fb-${index + 1}`,
+    text: String((item && item.text) || "").trim(),
+    href: String((item && item.href) || "").trim(),
+    color: /^#?[0-9a-fA-F]{3,8}$/.test(String((item && item.color) || "").trim()) ? (String(item.color).trim().startsWith("#") ? item.color.trim() : `#${item.color.trim()}`) : "#ffb12a",
+    hidden: !!(item && item.hidden),
+    enabled: !item || item.enabled !== false
+  }));
+}
+function pickTextColor(color) {
+  let hex = String(color || "").replace("#", "").trim();
+  if (hex.length === 3) hex = hex.split("").map((char) => char + char).join("");
+  if (hex.length < 6) return "#17110a";
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.62 ? "#17110a" : "#fffaf2";
 }
 function categoryIcon(category) {
   const label = String(category.label || "");
@@ -243,40 +263,29 @@ function renderSmileEntry() {
   const entry = normalizeSmileEntry(readData(STORAGE.smile, defaultSmileEntry));
   const button = document.querySelector(".smile-float");
   if (!button) return;
+  if (entry.enabled === false) {
+    button.hidden = true;
+    return;
+  }
+  button.hidden = false;
   button.href = entry.href || "smile.html";
   button.setAttribute("aria-label", String(entry.label || "進來笑一下").replace(/\n/g, " "));
   button.innerHTML = `<img src="${escapeHtml(entry.image || defaultSmileEntry.image)}" alt="${escapeHtml(String(entry.label || "進來笑一下").replace(/\n/g, " "))}"><span>${escapeHtml(entry.label || "進來笑一下").replace(/\n/g, "")}</span>`;
 }
-function renderPromoFloat() {
-  const button = document.querySelector("#promoFloat");
-  const panel = document.querySelector("#promoFloatPanel");
-  if (!button || !panel) return;
-  const wrap = button.closest(".promo-float-wrap");
-  const promos = readData(STORAGE.promos, defaultPromoLinks).slice(0, 3).filter((promo) => promo && promo.enabled !== false && promo.title && promo.href);
-  if (!promos.length) {
-    document.body.classList.add("is-promo-hidden");
-    if (wrap) wrap.hidden = true;
-    panel.hidden = true;
-    panel.innerHTML = "";
-    button.setAttribute("aria-expanded", "false");
-    return;
-  }
-  document.body.classList.remove("is-promo-hidden");
-  if (wrap) wrap.hidden = false;
-  const linkIcon = `<svg class="promo-link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>`;
-  panel.innerHTML = promos.map((promo) => `<a href="${escapeHtml(promo.href)}" target="_blank" rel="noopener">${linkIcon}<span>${escapeHtml(promo.title)}</span></a>`).join("");
-  if (button.dataset.promoBound === "true") return;
-  button.dataset.promoBound = "true";
-  button.addEventListener("click", () => {
-    const open = panel.hidden;
-    panel.hidden = !open;
-    button.setAttribute("aria-expanded", String(open));
-  });
-  document.addEventListener("click", (event) => {
-    if (panel.hidden || event.target.closest(".promo-float-wrap")) return;
-    panel.hidden = true;
-    button.setAttribute("aria-expanded", "false");
-  });
+function renderFloatButtons() {
+  const container = document.querySelector("#floatLinks");
+  if (!container) return;
+  const linkIcon = `<svg class="float-link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>`;
+  const buttons = normalizeFloatButtons(readData(STORAGE.floatButtons, defaultFloatButtons)).filter((button) => !button.hidden && (button.text || button.href));
+  container.innerHTML = buttons.map((button) => {
+    const color = button.color || "#ffb12a";
+    const style = `--fb-color:${escapeHtml(color)};--fb-text:${pickTextColor(color)};`;
+    const inner = `${linkIcon}<span>${escapeHtml(button.text || button.href)}</span>`;
+    const active = button.enabled !== false && !!button.href;
+    if (!active) return `<span class="float-link" aria-disabled="true" style="${style}">${inner}</span>`;
+    const external = /^https?:/i.test(button.href);
+    return `<a class="float-link" href="${escapeHtml(button.href)}" style="${style}"${external ? ` target="_blank" rel="noopener"` : ""}>${inner}</a>`;
+  }).join("");
 }
 function renderProducts() {
   if (!productCarousel) return;
@@ -361,10 +370,10 @@ productNext?.addEventListener("click", () => productCarousel?.scrollBy({ left: g
 productCarousel?.addEventListener("scroll", updateProductArrows);
 window.addEventListener("resize", updateProductArrows);
 window.addEventListener("storage", (event) => {
-  if ([STORAGE.products, STORAGE.banners, STORAGE.contact, STORAGE.contactCards, STORAGE.flow, STORAGE.smile, STORAGE.promos, STORAGE.categories].includes(event.key)) location.reload();
+  if ([STORAGE.products, STORAGE.banners, STORAGE.contact, STORAGE.contactCards, STORAGE.flow, STORAGE.smile, STORAGE.floatButtons, STORAGE.categories].includes(event.key)) location.reload();
 });
 
-[renderContactInfo, renderBanners, renderFlow, renderContactCards, renderProducts, renderCategories, renderSmileEntry, renderPromoFloat, startSlider].forEach((fn) => { try { fn(); } catch (error) { console.warn("init error", error); } });
+[renderContactInfo, renderBanners, renderFlow, renderContactCards, renderProducts, renderCategories, renderSmileEntry, renderFloatButtons, startSlider].forEach((fn) => { try { fn(); } catch (error) { console.warn("init error", error); } });
 
 
 

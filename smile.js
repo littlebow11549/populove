@@ -16,9 +16,9 @@ const smileTagsKey = "populoveSmileTags";
 const smileDisplayKey = "populoveSmileDisplaySettings";
 const memberKey = "populoveSmileMember";
 const batchQuotaKey = "populoveSmileBatchQuota";
-const promoKey = "populovePromoLinks";
+const floatButtonsKey = "populoveFloatButtons";
 const publishedVersionKey = "populovePublishedVersionSmile";
-const publishedSettingKeys = [smileEntryKey, coinSettingsKey, reactionSettingsKey, promoKey, smileTagsKey, smileDisplayKey];
+const publishedSettingKeys = [smileEntryKey, coinSettingsKey, reactionSettingsKey, floatButtonsKey, smileTagsKey, smileDisplayKey];
 const cacheDuration = 60 * 60 * 1000;
 const batchWindow = 6 * 60 * 60 * 1000;
 const fallbackMemeImage = `data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"><rect width="800" height="800" rx="90" fill="#16161b"/><circle cx="400" cy="350" r="190" fill="#ff8a1f"/><text x="400" y="640" text-anchor="middle" fill="#fffaf2" font-family="Arial" font-size="56" font-weight="900">今天也要 Populove!</text></svg>`)}`;
@@ -79,7 +79,7 @@ function closeCrop(){cropper.hidden=true; cropState={image:null,fileName:"",zoom
 function addCustomMeme(src,message){const items=readJson(customMemeKey,[]); items.unshift({id:`custom-${Date.now()}`,tag:"custom",title:"我的 Populove 圖",src,ownerId:currentMemberId(),createdAt:Date.now()}); if(!tryWriteJson(customMemeKey,items.slice(0,60))){setToolStatus("圖片容量太大，請縮小圖片後再試一次。");return false;} addCoins(1); activeTag="custom"; index=0; document.querySelectorAll("[data-tag]").forEach((item)=>item.classList.toggle("is-active",item.dataset.tag==="custom")); setToolStatus(message||"已加入你的自創圖，Populove 幣 +1。正式共享需匯出最新資料檔上傳。"); render(); return true;}
 function hasMember(){return !!getMember();}
 function openMember(){memberModal.hidden=false;}
-function activePromos(){return readJson(promoKey,[{title:"奇幻角色生成器",href:"https://character-prompt-generator.netlify.app/",enabled:true},{title:"翊軒酒莊",href:"https://godenwine.com/",enabled:true},{title:"",href:"",enabled:false}]).slice(0,3).filter((p)=>p&&p.enabled!==false&&p.title&&p.href);}
+function activePromos(){return readJson(floatButtonsKey,[{text:"奇幻角色生成器",href:"https://character-prompt-generator.netlify.app/",color:"#ff8a1f",hidden:false,enabled:true},{text:"翊軒酒莊",href:"https://godenwine.com/",color:"#7a5cff",hidden:false,enabled:true}]).slice(0,2).filter((b)=>b&&!b.hidden&&b.enabled!==false&&b.text&&b.href).map((b)=>({title:b.text,href:b.href}));}
 function promoLinkIcon(){return `<svg class="promo-link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>`;}
 function renderPromos(){const promos=activePromos(); if(openPromosButton)openPromosButton.hidden=!promos.length; if(!promos.length){promoPanel.hidden=true; promoPanel.innerHTML=""; return;} promoPanel.innerHTML=promos.map((p)=>`<a href="${p.href}" target="_blank" rel="noopener">${promoLinkIcon()}<span>${p.title}</span></a>`).join("");}
 memeTags?.addEventListener("click",(event)=>{const button=event.target.closest("[data-tag]"); if(!button)return; activeTag=button.dataset.tag; index=0; render();});

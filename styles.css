@@ -5000,3 +5000,168 @@ h3 {
     height: 10px !important;
   }
 }
+
+/* ===== 快捷懸浮按鈕（笑一下入口 + 自訂懸浮按鈕 + LINE） ===== */
+.float-stack {
+  position: fixed;
+  right: 18px;
+  bottom: 22px;
+  z-index: 72;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+/* 笑一下與 LINE 改由 .float-stack 排版，取消舊有固定定位 */
+.float-stack .smile-float,
+.float-stack .line-float {
+  position: static !important;
+  right: auto !important;
+  bottom: auto !important;
+  top: auto !important;
+  left: auto !important;
+}
+
+.float-links {
+  display: contents;
+}
+
+.smile-float[hidden] {
+  display: none !important;
+}
+
+/* 自訂懸浮按鈕：樣式參考推廣（膠囊狀、可自訂顏色） */
+.float-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  max-width: min(260px, calc(100vw - 40px));
+  padding: 0 18px;
+  color: var(--fb-text, #17110a);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+  background: var(--fb-color, #ffb12a);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 900;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.float-link .float-link-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.float-link span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.float-link:hover {
+  filter: brightness(1.04);
+}
+
+.float-link[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .float-stack {
+    right: max(14px, env(safe-area-inset-right));
+    bottom: calc(18px + env(safe-area-inset-bottom));
+    gap: 12px;
+  }
+
+  .float-link {
+    min-height: 46px;
+    max-width: min(220px, calc(100vw - 32px));
+    padding: 0 14px;
+    font-size: 14px;
+  }
+}
+
+/* ===== 後台：懸浮按鈕詳細設定卡片 ===== */
+.admin-floatbtn-list {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-floatbtn {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.admin-floatbtn-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-floatbtn-head strong {
+  color: #ffcf69;
+  font-weight: 950;
+}
+
+.admin-floatbtn-remove {
+  min-height: 34px;
+  padding: 6px 14px;
+  color: #fffaf2;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.admin-floatbtn-remove:hover {
+  background: rgba(255, 110, 90, 0.26);
+  border-color: rgba(255, 110, 90, 0.5);
+}
+
+.admin-floatbtn-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.admin-floatbtn label.admin-color-field {
+  display: grid;
+  gap: 6px;
+}
+
+.admin-floatbtn input[type="color"] {
+  width: 100%;
+  min-height: 44px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.admin-floatbtn-empty {
+  margin: 0;
+  color: rgba(255, 250, 242, 0.7);
+}
+
+.admin-add-floatbtn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
