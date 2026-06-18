@@ -1392,21 +1392,10 @@ h3 {
   font-size: 18px;
   font-weight: 1000;
   cursor: grab;
-  touch-action: none;
-  user-select: none;
 }
 
 .drag-handle:active {
   cursor: grabbing;
-}
-
-.admin-product.is-dragging {
-  opacity: 0.6;
-}
-
-.admin-product.is-drop-target {
-  outline: 2px dashed rgba(255, 122, 26, 0.9);
-  outline-offset: -2px;
 }
 
 .admin-product[draggable="true"] {
@@ -2046,10 +2035,10 @@ h3 {
   width: 36px;
   height: 36px;
   padding: 0;
-  color: #fffaf2;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #2b2b30;
+  border: 1px solid rgba(0, 0, 0, 0.28);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.06);
   transform: translateY(-50%);
   cursor: pointer;
 }

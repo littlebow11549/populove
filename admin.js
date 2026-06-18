@@ -134,7 +134,7 @@ function syncPublishedSettings(){const version=publishedSiteVersion(); if(!versi
 function read(key, fallback){let data=null;try{data=JSON.parse(localStorage.getItem(key)||"null");}catch{} const published=window.POPULOVE_SITE_DATA?.[key]; const usePublished=publishedTime(key)>localTime(key); if(usePublished&&published){try{localStorage.setItem(key,JSON.stringify(published));localStorage.setItem(`${key}UpdatedAt`,String(publishedTime(key)));}catch{} return Array.isArray(fallback)?published:{...fallback,...published};} if(Array.isArray(fallback)&&Array.isArray(data))return data; if(!Array.isArray(fallback)&&data&&typeof data==="object")return data; if(Array.isArray(fallback))return Array.isArray(published)&&published.length?published:[...fallback]; return published&&typeof published==="object"?published:{...fallback};}
 let versionSnapshotTimer;
 let suppressVersionSnapshot = false;
-function save(key, data){localStorage.setItem(key, JSON.stringify(data)); localStorage.setItem(`${key}UpdatedAt`, String(Date.now()));}
+function save(key, data){localStorage.setItem(key, JSON.stringify(data)); localStorage.setItem(`${key}UpdatedAt`, String(Date.now())); if(!suppressVersionSnapshot&&!versionStorageKeys().has(key))scheduleVersionSnapshot();}
 function escapeHtml(value){return String(value||"").replace(/[&<>"]/g,(char)=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[char]));}
 function fileData(file){return new Promise((resolve,reject)=>{const reader=new FileReader(); reader.onload=()=>resolve(String(reader.result)); reader.onerror=()=>reject(reader.error); reader.readAsDataURL(file);});}
 function status(selector, text){const el=$(selector); if(!el)return; el.textContent=text; clearTimeout(status.t); status.t=setTimeout(()=>el.textContent="",2600);}
@@ -173,7 +173,6 @@ loginForm.addEventListener("submit", (event)=>{event.preventDefault(); const dat
 logoutButton.addEventListener("click",()=>{sessionStorage.removeItem(ADMIN_SESSION_KEY); setVisible(false);});
 function restoreInitialVersion(){recordVersionSnapshot("還原初始版本前",true); suppressVersionSnapshot=true; const restoredAt=Date.now(); const payload=initialUnsetProductPayload(); Object.entries(payload).forEach(([key,value])=>{if(key.endsWith("UpdatedAt"))return; localStorage.setItem(key,JSON.stringify(value)); localStorage.setItem(`${key}UpdatedAt`,String(restoredAt));}); localStorage.setItem(PUBLISHED_VERSION_KEY,String(publishedSiteVersion()||restoredAt)); suppressVersionSnapshot=false; renderAll(); status("#versionStatus","已還原商品未設定版，既有可回復版本已保留。");}
 resetAll?.addEventListener("click",restoreInitialVersion);
-document.querySelector("#reloadPublished")?.addEventListener("click",()=>{ if(!window.confirm("這會清除這個瀏覽器的後台暫存，改用正式站（site-data.js）的最新內容。這個瀏覽器尚未匯出的修改會消失，確定要重新載入嗎？"))return; Object.values(STORAGE).forEach((key)=>{localStorage.removeItem(key);localStorage.removeItem(`${key}UpdatedAt`);}); localStorage.removeItem(PUBLISHED_VERSION_KEY); localStorage.removeItem("populoveGiphyMemeCache"); location.reload(); });
 function exportPublishedData(){
   recordVersionSnapshot("發布前快照", true);
   const siteVersion = Date.now();
@@ -204,7 +203,7 @@ function renderCards(){const items=read(STORAGE.contactCards,defaults.contactCar
 function renderFlow(){const items=read(STORAGE.flow,defaults.flow); $("#flowList").innerHTML=items.map((f,i)=>row(f.id,f.title,`${String(i+1).padStart(2,"0")} ${f.text}`,normalizeIcon(f.icon,"i-search"),"flow")).join("");}
 function renderContact(){const data=read(STORAGE.contact,defaults.contact); const form=$("#contactForm"); Object.keys(data).forEach((key)=>form.elements[key].value=data[key]||"");}
 function renderVersions(){const form=$("#versionSettingsForm"); const settings=read(STORAGE.versionSettings,defaults.versionSettings); const history=readVersionHistory().slice(0,versionLimit()); if(form)form.elements.maxVersions.value=versionLimit(); const count=$("#versionCount"); if(count)count.textContent=`保留 ${history.length}/${Math.min(5,Math.max(2,Number(settings.maxVersions)||5))} 個版本`; const list=$("#versionHistoryList"); if(!list)return; list.innerHTML=history.length?history.map((item)=>{const locked=isProtectedVersion(item); const deleteButton=locked?"":`<button class="version-delete" type="button" data-delete-version="${escapeHtml(item.id)}">刪除</button>`; const badge=item.id===INITIAL_VERSION_ID?"初始":item.id===PRODUCT_LISTED_VERSION_ID?"內建":"預設"; const inlineDelete=locked?`<span class="version-lock-badge">${badge}</span>`:`<button class="version-delete-inline" type="button" data-delete-version="${escapeHtml(item.id)}">刪除</button>`; return `<article class="version-swipe${locked?" is-locked":""}" data-version-row="${escapeHtml(item.id)}" data-locked="${locked?"true":"false"}">${deleteButton}<div class="admin-product version-row"><div class="admin-icon-pill"><svg class="icon" aria-hidden="true"><use href="#i-clock"></use></svg><span>版本</span></div><div><strong>${escapeHtml(item.label||"設定快照")}</strong><span>${new Date(item.createdAt||Date.now()).toLocaleString("zh-TW")} / ${Object.keys(item.payload||{}).filter((key)=>!key.endsWith("UpdatedAt")).length} 組設定</span></div><div class="admin-row-actions"><button type="button" data-restore-version="${escapeHtml(item.id)}">回復</button>${inlineDelete}</div></div></article>`;}).join(""):`<p class="admin-note">尚未建立可回復版本。</p>`;}
-function row(idValue,title,meta,media,type){const mediaText=String(media||""); const img=mediaText.startsWith("data:")||mediaText.includes("assets/")?`<img src="${escapeHtml(media)}" alt="${escapeHtml(title)}">`:`<div class="admin-icon-pill"><svg class="icon" aria-hidden="true"><use href="#${escapeHtml(normalizeIcon(mediaText,"i-shirt"))}"></use></svg><span>${escapeHtml(mediaText||"icon")}</span></div>`; const drag=type==="product"?` data-product-id="${escapeHtml(idValue)}"`:""; const handle=type==="product"?`<button class="drag-handle" type="button" aria-label="拖曳調整商品順序" title="拖曳調整順序">☰</button>`:""; const sortableClass=type==="product"?" is-sortable":""; return `<article class="admin-product${sortableClass}"${drag}>${handle}${img}<div><strong>${escapeHtml(title)}</strong><span>${escapeHtml(meta).replace(/\n/g," / ")}</span></div><div class="admin-row-actions"><button class="row-move" type="button" data-move="up" data-move-id="${escapeHtml(idValue)}" aria-label="上移">▲</button><button class="row-move" type="button" data-move="down" data-move-id="${escapeHtml(idValue)}" aria-label="下移">▼</button><button type="button" data-edit-${type}="${escapeHtml(idValue)}">編輯</button><button type="button" data-remove-${type}="${escapeHtml(idValue)}">刪除</button></div></article>`;}
+function row(idValue,title,meta,media,type){const mediaText=String(media||""); const img=mediaText.startsWith("data:")||mediaText.includes("assets/")?`<img src="${escapeHtml(media)}" alt="${escapeHtml(title)}">`:`<div class="admin-icon-pill"><svg class="icon" aria-hidden="true"><use href="#${escapeHtml(normalizeIcon(mediaText,"i-shirt"))}"></use></svg><span>${escapeHtml(mediaText||"icon")}</span></div>`; const drag=type==="product"?` draggable="true" data-product-id="${escapeHtml(idValue)}"`:""; const handle=type==="product"?`<button class="drag-handle" type="button" aria-label="拖曳調整商品順序" title="拖曳調整順序">☰</button>`:""; const sortableClass=type==="product"?" is-sortable":""; return `<article class="admin-product${sortableClass}"${drag}>${handle}${img}<div><strong>${escapeHtml(title)}</strong><span>${escapeHtml(meta).replace(/\n/g," / ")}</span></div><div class="admin-row-actions"><button class="row-move" type="button" data-move="up" data-move-id="${escapeHtml(idValue)}" aria-label="上移">▲</button><button class="row-move" type="button" data-move="down" data-move-id="${escapeHtml(idValue)}" aria-label="下移">▼</button><button type="button" data-edit-${type}="${escapeHtml(idValue)}">編輯</button><button type="button" data-remove-${type}="${escapeHtml(idValue)}">刪除</button></div></article>`;}
 function normalizeSmileEntryAdmin(data){
   const image = !data.image || data.image.includes("media.giphy.com/media/111ebonMs90YLu") ? defaults.smile.image : data.image;
   const label = !data.label || ["笑一下", "你今天\\nPopulove\\n了沒?", "你今天\nPopulove\n了沒?"].includes(data.label) ? defaults.smile.label : data.label;
@@ -297,41 +296,40 @@ function upsert(key,fallback,item){const items=read(key,fallback); const idx=ite
 function bindProductSorting(){
   const list = $("#productList");
   if(!list) return;
-  let dragId = null;
-  const clearMarks = ()=>list.querySelectorAll(".is-dragging,.is-drop-target").forEach((card)=>card.classList.remove("is-dragging","is-drop-target"));
-  const onMove = (event)=>{
-    if(!dragId) return;
-    if(event.cancelable) event.preventDefault();
-    const over = document.elementFromPoint(event.clientX, event.clientY)?.closest("[data-product-id]");
-    list.querySelectorAll(".is-drop-target").forEach((card)=>card.classList.remove("is-drop-target"));
-    if(over && over.dataset.productId !== dragId) over.classList.add("is-drop-target");
-  };
-  const onUp = (event)=>{
-    if(dragId){
-      const over = document.elementFromPoint(event.clientX, event.clientY)?.closest("[data-product-id]");
-      if(over && over.dataset.productId !== dragId){
-        const items = read(STORAGE.products, defaults.products);
-        const from = items.findIndex((item)=>item.id === dragId);
-        const to = items.findIndex((item)=>item.id === over.dataset.productId);
-        if(from >= 0 && to >= 0){ const [moved] = items.splice(from, 1); items.splice(to, 0, moved); save(STORAGE.products, items); renderAll(); status("#productStatus", "商品順序已更新。"); }
-      }
-    }
-    dragId = null; clearMarks();
-    document.removeEventListener("pointermove", onMove);
-    document.removeEventListener("pointerup", onUp);
-    document.removeEventListener("pointercancel", onUp);
-  };
-  list.addEventListener("pointerdown", (event)=>{
-    const handle = event.target.closest(".drag-handle");
-    if(!handle) return;
-    const card = handle.closest("[data-product-id]");
+  let draggedId = "";
+  list.addEventListener("dragstart", (event)=>{
+    const card = event.target.closest("[data-product-id]");
     if(!card) return;
-    dragId = card.dataset.productId;
+    draggedId = card.dataset.productId;
     card.classList.add("is-dragging");
-    if(event.cancelable) event.preventDefault();
-    document.addEventListener("pointermove", onMove, {passive:false});
-    document.addEventListener("pointerup", onUp);
-    document.addEventListener("pointercancel", onUp);
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", draggedId);
+  });
+  list.addEventListener("dragend", ()=>{
+    list.querySelectorAll(".admin-product").forEach((card)=>card.classList.remove("is-dragging","is-drop-target"));
+    draggedId = "";
+  });
+  list.addEventListener("dragover", (event)=>{
+    if(!draggedId) return;
+    const card = event.target.closest("[data-product-id]");
+    if(!card || card.dataset.productId === draggedId) return;
+    event.preventDefault();
+    list.querySelectorAll(".is-drop-target").forEach((item)=>item.classList.remove("is-drop-target"));
+    card.classList.add("is-drop-target");
+  });
+  list.addEventListener("drop", (event)=>{
+    const target = event.target.closest("[data-product-id]");
+    if(!draggedId || !target || target.dataset.productId === draggedId) return;
+    event.preventDefault();
+    const items = read(STORAGE.products, defaults.products);
+    const from = items.findIndex((item)=>item.id === draggedId);
+    const to = items.findIndex((item)=>item.id === target.dataset.productId);
+    if(from < 0 || to < 0) return;
+    const [moved] = items.splice(from, 1);
+    items.splice(to, 0, moved);
+    save(STORAGE.products, items);
+    renderProducts();
+    status("#productStatus", "商品順序已更新。");
   });
 }
 
