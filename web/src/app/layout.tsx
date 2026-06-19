@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
+
+import { IconSprite } from "@/components/icon-sprite";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "POPULOVE｜重構基礎（P0）",
-  description: "POPULOVE 客製化團體服網站重構專案的前端基礎建設。",
+  title: "POPULOVE 客製化團體服 | 班服、制服、活動服、品牌周邊",
+  description:
+    "POPULOVE 提供客製化團體服、班服、公司制服、活動 T-Shirt、POLO 衫、帽 T、刺繡與印刷加工服務。",
 };
 
 export default function RootLayout({
@@ -12,8 +16,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-Hant" className="h-full antialiased">
-      <body className="min-h-full">{children}</body>
+    <html lang="zh-Hant" className="antialiased">
+      <body>
+        <IconSprite />
+        {children}
+      </body>
     </html>
   );
 }

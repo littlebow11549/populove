@@ -1,38 +1,51 @@
 @import "tailwindcss";
 
 /*
-  POPULOVE 設計變數（單一來源）。
-  這裡是「設計 token」集中地，取代舊版 styles.css 那種互相覆寫的 !important。
-  後續所有顏色／字體都從這裡取用，不要在元件裡寫死色碼。
+  POPULOVE 設計變數（單一來源），對齊舊站既有配色。
+  集中管理顏色／字體，取代舊版 styles.css 互相覆寫的 !important。
 */
 @theme {
-  /* 介面 */
-  --color-base: #101014;
-  --color-surface: #16161b;
-  --color-border: rgba(255, 255, 255, 0.14);
-  --color-ink: #fffaf2;
-  --color-muted: rgba(255, 250, 242, 0.7);
+  /* 介面（深色） */
+  --color-base: #0d0d0e;
+  --color-surface: #151517;
+  --color-panel: #1b1b1e;
+  --color-panel-strong: #242327;
+  --color-border: rgba(255, 255, 255, 0.1);
+
+  /* 文字 */
+  --color-ink: #f6f1ea;
+  --color-text: #d7d0c7;
+  --color-muted: #948b82;
 
   /* 品牌色 */
-  --color-brand: #ffb12a;
-  --color-brand-strong: #ff7a1a;
-  --color-brand-soft: #ffe89b;
+  --color-brand: #ff7a1a;
+  --color-brand-deep: #d94c0d;
+  --color-amber: #ffb15a;
 
-  /* 字體：採用系統字型堆疊（含中文），讓建置不依賴外部字型下載 */
+  /* 字體：系統字型堆疊（含中文），建置不依賴外部字型下載 */
   --font-sans:
-    "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", system-ui,
+    "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui,
     -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
 html,
 body {
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
-  background: var(--color-base);
+  margin: 0;
+  overflow-x: hidden;
   color: var(--color-ink);
+  background:
+    radial-gradient(
+      circle at 20% 0%,
+      rgba(255, 122, 26, 0.18),
+      transparent 34%
+    ),
+    linear-gradient(180deg, #0d0d0e 0%, #151517 46%, #0d0d0e 100%);
+  background-attachment: fixed;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
