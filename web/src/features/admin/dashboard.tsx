@@ -11,6 +11,7 @@ import { CategoriesSection } from "./sections/categories-section";
 import { ContactSection } from "./sections/contact-section";
 import { FlowSection } from "./sections/flow-section";
 import { ProductsSection } from "./sections/products-section";
+import { SmileSection } from "./sections/smile-section";
 import { adminGhostButton } from "./ui";
 
 const TABS = [
@@ -33,6 +34,7 @@ const SECTIONS: Partial<Record<TabId, ComponentType>> = {
   contact: ContactSection,
   cards: CardsSection,
   flow: FlowSection,
+  smile: SmileSection,
 };
 
 export function Dashboard({ onLogout }: { onLogout: () => void }) {
