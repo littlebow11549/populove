@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ComponentType } from "react";
 
 import { Icon } from "@/components/icon";
 import { cn } from "@/lib/utils/cn";
 
+import { CardsSection } from "./sections/cards-section";
+import { CategoriesSection } from "./sections/categories-section";
 import { ContactSection } from "./sections/contact-section";
+import { FlowSection } from "./sections/flow-section";
 import { adminGhostButton } from "./ui";
 
 const TABS = [
@@ -21,9 +24,17 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]["id"];
 
+const SECTIONS: Partial<Record<TabId, ComponentType>> = {
+  contact: ContactSection,
+  categories: CategoriesSection,
+  flow: FlowSection,
+  cards: CardsSection,
+};
+
 export function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [tab, setTab] = useState<TabId>("contact");
   const current = TABS.find((item) => item.id === tab);
+  const ActiveSection = SECTIONS[tab];
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
@@ -58,8 +69,8 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
       </nav>
 
       <section className="border-border bg-panel rounded-2xl border p-6">
-        {tab === "contact" ? (
-          <ContactSection />
+        {ActiveSection ? (
+          <ActiveSection />
         ) : (
           <div className="text-muted flex flex-col items-center gap-2 py-12 text-center">
             <Icon name="i-wrench" className="text-amber h-8 w-8" />
