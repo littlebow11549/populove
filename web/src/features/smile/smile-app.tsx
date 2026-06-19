@@ -2,12 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Icon } from "@/components/icon";
 import { normalizeFloatButtons } from "@/lib/data/normalize";
+import type { CustomMeme } from "@/lib/data/types";
 import { useIsClient } from "@/lib/hooks/use-is-client";
 import {
+  fetchGiphyMemes,
+  readGiphyCache,
+  writeGiphyCache,
+} from "@/lib/smile/giphy";
+import {
+  addCoins,
   getCoins,
   getMemes,
   getReactions,
@@ -15,9 +22,11 @@ import {
   reactToMeme,
   visibleReactions,
   REACTION_FACES,
+  type Meme,
   type MemeReaction,
 } from "@/lib/smile/state";
-import { load } from "@/lib/store/index";
+import { load, save } from "@/lib/store/index";
+import { resizeImageToDataUrl } from "@/lib/utils/image";
 import { cn } from "@/lib/utils/cn";
 
 const ghostButton =
@@ -38,18 +47,43 @@ function SmileInner() {
     getReactions(),
   );
   const [coins, setCoins] = useState(() => getCoins());
+  const [giphyMemes, setGiphyMemes] = useState<Meme[]>(
+    () => readGiphyCache() ?? [],
+  );
   const [index, setIndex] = useState(0);
   const [status, setStatus] = useState("");
   const [showPromos, setShowPromos] = useState(false);
+
+  // 後台有填 Giphy Key 且無有效快取時，向 Giphy 抓一批迷因。
+  useEffect(() => {
+    const key = load("smileEntry").giphyKey?.trim();
+    if (!key || readGiphyCache()) return;
+    let active = true;
+    const extra = load("smileTags")
+      .filter((tag) => Boolean(tag.query))
+      .map((tag) => ({ tag: tag.id, q: tag.query ?? "" }));
+    fetchGiphyMemes(key, extra)
+      .then((fetched) => {
+        if (active && fetched.length) {
+          writeGiphyCache(fetched);
+          setGiphyMemes(fetched);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const showCoin = load("smileDisplay").showCoinBadge !== false;
   const promos = normalizeFloatButtons(load("floatButtons")).filter(
     (button) => !button.hidden && button.enabled && button.text && button.href,
   );
-  const memes = getMemes(activeTag, reactions);
+  const memes = getMemes(activeTag, reactions, giphyMemes);
   const meme = memes[index] ?? memes[0];
   const reactionList = visibleReactions();
   const picked = meme ? (reactions[meme.id]?.picked ?? "") : "";
+  const tagLabel = tags.find((tag) => tag.id === meme?.tag)?.label ?? "迷因";
 
   function selectTag(tagId: string) {
     setActiveTag(tagId);
@@ -65,6 +99,29 @@ function SmileInner() {
     setReactions(result.reactions);
     setCoins(result.coins);
   }
+  async function handleUpload(file: File) {
+    const dataUrl = await resizeImageToDataUrl(file, 720);
+    const meme: CustomMeme = {
+      id: `custom-${Date.now()}`,
+      tag: "custom",
+      title: "我的 Populove 圖",
+      src: dataUrl,
+      createdAt: Date.now(),
+    };
+    save("customMemes", [meme, ...load("customMemes")].slice(0, 60));
+    setCoins(addCoins(1));
+    setActiveTag("custom");
+    setIndex(0);
+    setStatus("已加入你的自創圖，Populove 幣 +1。");
+  }
+  function deleteCustom(memeId: string) {
+    save(
+      "customMemes",
+      load("customMemes").filter((item) => item.id !== memeId),
+    );
+    setIndex(0);
+    setStatus("已刪除這張自創圖。");
+  }
   async function copyLink() {
     try {
       await navigator.clipboard.writeText(window.location.href);
@@ -73,8 +130,6 @@ function SmileInner() {
       setStatus("複製失敗，請手動複製網址。");
     }
   }
-
-  const tagLabel = tags.find((tag) => tag.id === meme?.tag)?.label ?? "迷因";
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-3xl flex-col gap-8 px-6 py-10">
@@ -150,9 +205,20 @@ function SmileInner() {
                 />
               </div>
               <div className="p-4">
-                <span className="text-muted text-sm">
-                  {tagLabel} · {index + 1}/{memes.length}
-                </span>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-muted text-sm">
+                    {tagLabel} · {index + 1}/{memes.length}
+                  </span>
+                  {meme.tag === "custom" && (
+                    <button
+                      type="button"
+                      onClick={() => deleteCustom(meme.id)}
+                      className="text-muted hover:text-ink text-sm font-bold"
+                    >
+                      刪除這張
+                    </button>
+                  )}
+                </div>
                 <h2 className="text-lg font-bold">
                   {meme.tag === "custom" ? "我的 Populove 圖" : meme.title}
                 </h2>
@@ -207,6 +273,20 @@ function SmileInner() {
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-3">
+        <label className={cn(ghostButton, "cursor-pointer")}>
+          <Icon name="i-upload" />
+          上傳自己的圖
+          <input
+            type="file"
+            accept="image/*,.gif"
+            className="hidden"
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+              if (file) void handleUpload(file);
+              event.target.value = "";
+            }}
+          />
+        </label>
         <button type="button" onClick={copyLink} className={ghostButton}>
           <Icon name="i-copy" />
           複製連結

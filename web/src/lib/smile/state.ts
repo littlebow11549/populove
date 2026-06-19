@@ -87,6 +87,11 @@ function setCoins(value: number): number {
   return next;
 }
 
+/** 直接加幣（例如上傳自創圖獎勵）。 */
+export function addCoins(amount: number): number {
+  return setCoins(getCoins() + amount);
+}
+
 function tryEarnCoin(): boolean {
   const today = todayKey();
   const daily = readValue<{ date: string; count: number }>(DAILY_KEY, {
@@ -172,6 +177,7 @@ export function visibleReactions(): string[] {
 export function getMemes(
   tag: string,
   reactions: Record<string, MemeReaction>,
+  giphyMemes: Meme[] = [],
 ): Meme[] {
   const custom = load("customMemes").map((meme) => ({
     id: meme.id,
@@ -179,7 +185,8 @@ export function getMemes(
     title: meme.title,
     src: meme.src,
   }));
-  const all = [...FALLBACK_MEMES, ...custom];
+  const base = giphyMemes.length ? giphyMemes : FALLBACK_MEMES;
+  const all = [...base, ...custom];
   if (tag === "custom") return all.filter((meme) => meme.tag === "custom");
   if (tag === "hot") {
     const hot = all
