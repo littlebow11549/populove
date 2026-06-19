@@ -1,50 +1,87 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/button";
 import { Icon } from "@/components/icon";
 import type { Banner } from "@/lib/data/types";
+import { cn } from "@/lib/utils/cn";
 
-/**
- * 主視覺。P1.0 先呈現單張主 Banner；輪播動畫於後續子階段補上。
- */
+const INTERVAL = 5200;
+
 export function Hero({ banners }: { banners: Banner[] }) {
-  const banner = banners.find((item) => item.primary) ?? banners[0];
-  if (!banner) return null;
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (banners.length <= 1) return;
+    const timer = setInterval(
+      () => setIndex((current) => (current + 1) % banners.length),
+      INTERVAL,
+    );
+    return () => clearInterval(timer);
+  }, [banners.length]);
+
+  if (!banners.length) return null;
+  const active = banners[index];
 
   return (
     <section aria-label="主視覺" className="relative isolate overflow-hidden">
       <div className="relative h-[clamp(440px,72vh,640px)] w-full">
-        <Image
-          src={banner.image}
-          alt={banner.title}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
+        {banners.map((banner, i) => (
+          <Image
+            key={banner.id}
+            src={banner.image}
+            alt={banner.title}
+            fill
+            priority={i === 0}
+            sizes="100vw"
+            className={cn(
+              "object-cover transition-opacity duration-700",
+              i === index ? "opacity-100" : "opacity-0",
+            )}
+          />
+        ))}
         <div className="from-base/95 via-base/70 absolute inset-0 bg-gradient-to-r to-transparent" />
-      </div>
 
-      <div className="absolute inset-0">
-        <div className="mx-auto flex h-full max-w-6xl flex-col justify-center gap-4 px-6">
-          <p className="text-amber text-sm font-bold tracking-widest">
-            {banner.label}
-          </p>
-          <h1 className="max-w-xl text-3xl leading-tight font-black sm:text-5xl">
-            {banner.title}
-          </h1>
-          <p className="text-text max-w-lg">{banner.text}</p>
-          <div className="flex flex-wrap gap-3 pt-2">
-            <Button href="#estimate" variant="primary">
-              <Icon name="i-calculator" />
-              費用估算
-            </Button>
-            <Button href="https://line.me/ti/p/~derrick00" variant="light">
-              <Icon name="i-message" />
-              LINE 詢價
-            </Button>
+        <div className="absolute inset-0">
+          <div className="mx-auto flex h-full max-w-6xl flex-col justify-center gap-4 px-6">
+            <p className="text-amber text-sm font-bold tracking-widest">
+              {active.label}
+            </p>
+            <h1 className="max-w-xl text-3xl leading-tight font-black sm:text-5xl">
+              {active.title}
+            </h1>
+            <p className="text-text max-w-lg">{active.text}</p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Button href="#estimate" variant="primary">
+                <Icon name="i-calculator" />
+                費用估算
+              </Button>
+              <Button href="https://line.me/ti/p/~derrick00" variant="light">
+                <Icon name="i-message" />
+                LINE 詢價
+              </Button>
+            </div>
           </div>
         </div>
+
+        {banners.length > 1 && (
+          <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-2">
+            {banners.map((banner, i) => (
+              <button
+                key={banner.id}
+                type="button"
+                aria-label={`切換到第 ${i + 1} 張`}
+                onClick={() => setIndex(i)}
+                className={cn(
+                  "h-2 rounded-full transition-all",
+                  i === index ? "bg-brand w-6" : "w-2 bg-white/40",
+                )}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,9 +1,11 @@
+import { About } from "@/features/home/about";
 import { CategoryStrip } from "@/features/home/category-strip";
 import { ContactCards } from "@/features/home/contact-cards";
 import { FloatButtons } from "@/features/home/float-buttons";
 import { Footer } from "@/features/home/footer";
 import { Header } from "@/features/home/header";
 import { Hero } from "@/features/home/hero";
+import { Methods } from "@/features/home/methods";
 import { OrderFlow } from "@/features/home/order-flow";
 import { Products } from "@/features/home/products";
 import { QuoteForm } from "@/features/home/quote-form";
@@ -25,7 +27,9 @@ export default function Home() {
       <main id="top">
         <CategoryStrip categories={categories} />
         <Hero banners={banners} />
+        <About />
         <OrderFlow steps={flow} />
+        <Methods />
         <Products products={products} />
         <QuoteForm />
         <ContactCards cards={contactCards} />
