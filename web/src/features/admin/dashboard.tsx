@@ -5,10 +5,12 @@ import { useState, type ComponentType } from "react";
 import { Icon } from "@/components/icon";
 import { cn } from "@/lib/utils/cn";
 
+import { BannersSection } from "./sections/banners-section";
 import { CardsSection } from "./sections/cards-section";
 import { CategoriesSection } from "./sections/categories-section";
 import { ContactSection } from "./sections/contact-section";
 import { FlowSection } from "./sections/flow-section";
+import { ProductsSection } from "./sections/products-section";
 import { adminGhostButton } from "./ui";
 
 const TABS = [
@@ -25,10 +27,12 @@ const TABS = [
 type TabId = (typeof TABS)[number]["id"];
 
 const SECTIONS: Partial<Record<TabId, ComponentType>> = {
-  contact: ContactSection,
+  products: ProductsSection,
   categories: CategoriesSection,
-  flow: FlowSection,
+  banners: BannersSection,
+  contact: ContactSection,
   cards: CardsSection,
+  flow: FlowSection,
 };
 
 export function Dashboard({ onLogout }: { onLogout: () => void }) {

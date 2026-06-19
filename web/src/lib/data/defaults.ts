@@ -7,8 +7,8 @@ import type { DataSchema } from "./keys";
  * 正式內容與圖片會在 P2.4（種子資料搬移）從現有站台導入。
  */
 
-const PRODUCT_PLACEHOLDER = "/placeholders/product.png";
-const BANNER_PLACEHOLDER = "/placeholders/banner.png";
+const PRODUCT_PLACEHOLDER = "/placeholders/product.svg";
+const BANNER_PLACEHOLDER = "/placeholders/banner.svg";
 const SMILE_ICON = "/brand/populove-bear.svg";
 
 export const DEFAULTS = {
