@@ -74,7 +74,8 @@ export function Header({
     "flex h-9 w-9 flex-none items-center justify-center rounded-full border border-border bg-panel text-xl text-text hover:text-ink disabled:opacity-30";
 
   return (
-    <header>
+    // 用 fragment 當根，讓 sticky 列的容器是整個頁面（body），捲動時才能持續置頂。
+    <>
       {/* 上方聯絡資訊列（小螢幕隱藏） */}
       <div className="border-border bg-surface/60 text-muted hidden border-b text-xs sm:block">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-1 px-6 py-2">
@@ -258,6 +259,6 @@ export function Header({
           </div>
         )}
       </div>
-    </header>
+    </>
   );
 }
