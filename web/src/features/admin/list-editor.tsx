@@ -235,31 +235,33 @@ export function ListEditor<T extends { id: string }>({
             return (
               <li
                 key={item.id}
-                className="border-border bg-surface flex items-center gap-3 rounded-xl border px-4 py-3"
+                className="border-border bg-surface flex flex-col gap-2 rounded-xl border px-4 py-3 sm:flex-row sm:items-center sm:gap-3"
               >
-                {thumbnail && (
-                  <span className="border-border bg-panel flex h-12 w-12 flex-none items-center justify-center overflow-hidden rounded-lg border">
-                    {thumb && (
-                      <Image
-                        src={thumb}
-                        alt=""
-                        width={48}
-                        height={48}
-                        unoptimized
-                        className="h-full w-full object-cover"
-                      />
-                    )}
-                  </span>
-                )}
-                <div className="min-w-0 flex-1">
-                  <strong className="block truncate">
-                    {String(item[primaryField]) || "未命名"}
-                  </strong>
-                  <span className="text-muted block truncate text-sm">
-                    {summarize(item)}
-                  </span>
+                <div className="flex min-w-0 flex-1 items-center gap-3">
+                  {thumbnail && (
+                    <span className="border-border bg-panel flex h-12 w-12 flex-none items-center justify-center overflow-hidden rounded-lg border">
+                      {thumb && (
+                        <Image
+                          src={thumb}
+                          alt=""
+                          width={48}
+                          height={48}
+                          unoptimized
+                          className="h-full w-full object-cover"
+                        />
+                      )}
+                    </span>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <strong className="block truncate">
+                      {String(item[primaryField]) || "未命名"}
+                    </strong>
+                    <span className="text-muted block truncate text-sm">
+                      {summarize(item)}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex flex-none items-center gap-1 self-end sm:self-auto">
                   <button
                     type="button"
                     aria-label="上移"

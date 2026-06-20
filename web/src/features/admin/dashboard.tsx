@@ -45,7 +45,7 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
   const ActiveSection = SECTIONS[tab];
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
+    <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
       <header className="mb-6 flex items-center justify-between gap-4">
         <div>
           <p className="text-amber text-sm font-bold tracking-widest">
@@ -76,7 +76,7 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
         ))}
       </nav>
 
-      <section className="border-border bg-panel rounded-2xl border p-6">
+      <section className="border-border bg-panel rounded-2xl border p-4 sm:p-6">
         {ActiveSection ? (
           <ActiveSection />
         ) : (

@@ -11,6 +11,7 @@ const eslintConfig = defineConfig([
   // 一次性搬移腳本（Node ESM）不納入 app 的 lint 規則。
   globalIgnores([
     ".next/**",
+    ".netlify/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
