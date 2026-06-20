@@ -9,33 +9,27 @@ import { Methods } from "@/features/home/methods";
 import { OrderFlow } from "@/features/home/order-flow";
 import { Products } from "@/features/home/products";
 import { QuoteForm } from "@/features/home/quote-form";
-import { load } from "@/lib/store/index";
+import { resolveSiteData } from "@/lib/data/resolve";
+import { fetchAllSiteData } from "@/lib/supabase/server";
 
-export default function Home() {
-  const contact = load("contact");
-  const categories = load("categories");
-  const banners = load("banners");
-  const flow = load("flow");
-  const products = load("products");
-  const contactCards = load("contactCards");
-  const smileEntry = load("smileEntry");
-  const floatButtons = load("floatButtons");
+export default async function Home() {
+  const data = resolveSiteData(await fetchAllSiteData());
 
   return (
     <>
-      <Header contact={contact} />
+      <Header contact={data.contact} />
       <main id="top">
-        <CategoryStrip categories={categories} />
-        <Hero banners={banners} />
+        <CategoryStrip categories={data.categories} />
+        <Hero banners={data.banners} />
         <About />
-        <OrderFlow steps={flow} />
+        <OrderFlow steps={data.flow} />
         <Methods />
-        <Products products={products} />
+        <Products products={data.products} />
         <QuoteForm />
-        <ContactCards cards={contactCards} />
+        <ContactCards cards={data.contactCards} />
       </main>
       <Footer />
-      <FloatButtons smileEntry={smileEntry} buttons={floatButtons} />
+      <FloatButtons smileEntry={data.smileEntry} buttons={data.floatButtons} />
     </>
   );
 }

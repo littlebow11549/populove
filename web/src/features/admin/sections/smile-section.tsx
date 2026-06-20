@@ -6,7 +6,8 @@ import { useState, type FormEvent } from "react";
 import { Icon } from "@/components/icon";
 import { normalizeFloatButtons } from "@/lib/data/normalize";
 import type { FloatButton, SmileEntry } from "@/lib/data/types";
-import { load, save } from "@/lib/store/index";
+import { saveContent } from "@/lib/store/content";
+import { load } from "@/lib/store/index";
 import { id } from "@/lib/utils/id";
 import { resizeImageToDataUrl } from "@/lib/utils/image";
 import { cn } from "@/lib/utils/cn";
@@ -40,7 +41,7 @@ export function SmileSection() {
 
   function saveEntry(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    save("smileEntry", entry);
+    saveContent("smileEntry", entry);
     setEntrySaved(true);
   }
 
@@ -74,7 +75,7 @@ export function SmileSection() {
   function saveButtons() {
     const next = normalizeFloatButtons(buttons);
     setButtons(next);
-    save("floatButtons", next);
+    saveContent("floatButtons", next);
     setButtonsSaved(true);
   }
 

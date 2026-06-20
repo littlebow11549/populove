@@ -1,7 +1,8 @@
 "use client";
 
 import type { FlowStep } from "@/lib/data/types";
-import { load, save } from "@/lib/store/index";
+import { saveContent } from "@/lib/store/content";
+import { load } from "@/lib/store/index";
 import { id } from "@/lib/utils/id";
 
 import { ListEditor, type FieldDef } from "../list-editor";
@@ -29,7 +30,7 @@ export function FlowSection() {
         link: "",
       })}
       summarize={(item) => item.text}
-      onSave={(items) => save("flow", items)}
+      onSave={(items) => saveContent("flow", items)}
       addLabel="新增流程"
     />
   );

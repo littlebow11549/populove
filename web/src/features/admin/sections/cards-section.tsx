@@ -1,7 +1,8 @@
 "use client";
 
 import type { ContactCard } from "@/lib/data/types";
-import { load, save } from "@/lib/store/index";
+import { saveContent } from "@/lib/store/content";
+import { load } from "@/lib/store/index";
 import { id } from "@/lib/utils/id";
 
 import { ListEditor, type FieldDef } from "../list-editor";
@@ -27,7 +28,7 @@ export function CardsSection() {
         href: "",
       })}
       summarize={(item) => item.text}
-      onSave={(items) => save("contactCards", items)}
+      onSave={(items) => saveContent("contactCards", items)}
       addLabel="新增卡片"
     />
   );

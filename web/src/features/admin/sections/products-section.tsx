@@ -1,7 +1,8 @@
 "use client";
 
 import type { Product } from "@/lib/data/types";
-import { load, save } from "@/lib/store/index";
+import { saveContent } from "@/lib/store/content";
+import { load } from "@/lib/store/index";
 import { id } from "@/lib/utils/id";
 
 import { ListEditor, type FieldDef } from "../list-editor";
@@ -43,7 +44,7 @@ export function ProductsSection() {
       summarize={(item) =>
         [item.price, item.tagText].filter(Boolean).join(" / ")
       }
-      onSave={(items) => save("products", items)}
+      onSave={(items) => saveContent("products", items)}
       addLabel="新增商品"
       thumbnail={(item) => item.image}
     />

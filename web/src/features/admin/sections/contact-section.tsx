@@ -4,7 +4,8 @@ import { useState, type FormEvent } from "react";
 
 import { Icon } from "@/components/icon";
 import type { ContactInfo } from "@/lib/data/types";
-import { load, save } from "@/lib/store/index";
+import { saveContent } from "@/lib/store/content";
+import { load } from "@/lib/store/index";
 
 import { adminField, adminLabel, adminPrimaryButton } from "../ui";
 
@@ -25,7 +26,7 @@ export function ContactSection() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    save("contact", data);
+    saveContent("contact", data);
     setSavedAt(Date.now());
   }
 

@@ -5,7 +5,8 @@
  * 自成一組儲存鍵，不混進內容資料層（DataSchema）。
  */
 import { STORAGE_KEYS, type DataKey } from "@/lib/data/keys";
-import { load, save } from "@/lib/store/index";
+import { saveContent } from "@/lib/store/content";
+import { load } from "@/lib/store/index";
 import { readValue, writeValue } from "@/lib/store/storage";
 import { id } from "@/lib/utils/id";
 
@@ -59,7 +60,7 @@ export function restoreSnapshot(snapshot: Snapshot): void {
   for (const key of CONTENT_KEYS) {
     if (key in snapshot.payload) {
       // 泛型回寫，型別正確性由快照產生時保證。
-      save(key, snapshot.payload[key] as never);
+      saveContent(key, snapshot.payload[key] as never);
     }
   }
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import type { Banner } from "@/lib/data/types";
-import { load, save } from "@/lib/store/index";
+import { saveContent } from "@/lib/store/content";
+import { load } from "@/lib/store/index";
 import { id } from "@/lib/utils/id";
 
 import { ListEditor, type FieldDef } from "../list-editor";
@@ -43,7 +44,7 @@ export function BannersSection() {
         textSize: "",
       })}
       summarize={(item) => item.label}
-      onSave={(items) => save("banners", items)}
+      onSave={(items) => saveContent("banners", items)}
       addLabel="新增 Banner"
       thumbnail={(item) => item.image}
     />

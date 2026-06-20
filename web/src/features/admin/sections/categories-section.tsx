@@ -1,7 +1,8 @@
 "use client";
 
 import type { Category } from "@/lib/data/types";
-import { load, save } from "@/lib/store/index";
+import { saveContent } from "@/lib/store/content";
+import { load } from "@/lib/store/index";
 import { id } from "@/lib/utils/id";
 
 import { ListEditor, type FieldDef } from "../list-editor";
@@ -34,7 +35,7 @@ export function CategoriesSection() {
       summarize={(item) =>
         [item.href, item.description].filter(Boolean).join(" / ")
       }
-      onSave={(items) => save("categories", items)}
+      onSave={(items) => saveContent("categories", items)}
       addLabel="新增分類"
     />
   );

@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 
 import { Icon } from "@/components/icon";
 
-import { setSession, verifyCredentials } from "./auth";
+import { setSession } from "./auth";
 import { adminField, adminLabel, adminPrimaryButton } from "./ui";
 
 export function Login({ onSuccess }: { onSuccess: () => void }) {
@@ -16,16 +16,25 @@ export function Login({ onSuccess }: { onSuccess: () => void }) {
     setBusy(true);
     setError("");
     const data = new FormData(event.currentTarget);
-    const ok = await verifyCredentials(
-      String(data.get("email") ?? ""),
-      String(data.get("password") ?? ""),
-    );
-    setBusy(false);
-    if (ok) {
-      setSession(true);
-      onSuccess();
-    } else {
-      setError("帳號或密碼錯誤，請再確認一次。");
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.get("email"),
+          password: data.get("password"),
+        }),
+      });
+      setBusy(false);
+      if (res.ok) {
+        setSession(true);
+        onSuccess();
+      } else {
+        setError("帳號或密碼錯誤，請再確認一次。");
+      }
+    } catch {
+      setBusy(false);
+      setError("登入失敗，請稍後再試。");
     }
   }
 

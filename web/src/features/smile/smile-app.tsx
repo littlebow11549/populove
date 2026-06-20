@@ -25,6 +25,7 @@ import {
   type Meme,
   type MemeReaction,
 } from "@/lib/smile/state";
+import { hydrateFromCloud } from "@/lib/store/cloud-client";
 import { load, save } from "@/lib/store/index";
 import { resizeImageToDataUrl } from "@/lib/utils/image";
 import { cn } from "@/lib/utils/cn";
@@ -36,7 +37,19 @@ const navButton =
 
 export function SmileApp() {
   const isClient = useIsClient();
-  if (!isClient) return null;
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    hydrateFromCloud().finally(() => setHydrated(true));
+  }, []);
+
+  if (!isClient || !hydrated) {
+    return (
+      <p className="text-muted mx-auto max-w-3xl px-6 py-20 text-center">
+        載入中…
+      </p>
+    );
+  }
   return <SmileInner />;
 }
 
