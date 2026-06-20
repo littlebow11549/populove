@@ -37,6 +37,19 @@ const ghostButton =
 const navButton =
   "flex h-12 w-12 flex-none items-center justify-center rounded-full border border-border bg-surface text-2xl text-text hover:text-ink";
 
+/**
+ * 自訂頁籤的 Giphy 搜尋字：優先用後台填的「搜尋字」，沒填就用頁籤名稱當關鍵字。
+ * 這樣新增頁籤即使只填名稱，也能抓到相關的圖。
+ */
+function tagQueries(): { tag: string; q: string }[] {
+  return load("smileTags")
+    .map((tag) => ({
+      tag: tag.id,
+      q: (tag.query || tag.label || "").trim(),
+    }))
+    .filter((item) => Boolean(item.q));
+}
+
 export function SmileApp() {
   const isClient = useIsClient();
   const [hydrated, setHydrated] = useState(false);
@@ -75,10 +88,7 @@ function SmileInner() {
     const key = load("smileEntry").giphyKey?.trim();
     if (!key || readGiphyCache()) return;
     let active = true;
-    const extra = load("smileTags")
-      .filter((tag) => Boolean(tag.query))
-      .map((tag) => ({ tag: tag.id, q: tag.query ?? "" }));
-    fetchGiphyMemes(key, extra)
+    fetchGiphyMemes(key, tagQueries())
       .then((fetched) => {
         if (active && fetched.length) {
           writeGiphyCache(fetched);
@@ -104,6 +114,40 @@ function SmileInner() {
   function selectTag(tagId: string) {
     setActiveTag(tagId);
     setIndex(0);
+    // 自訂頁籤若還沒有圖，就依該頁籤的關鍵字（搜尋字或名稱）即時抓一批。
+    const key = load("smileEntry").giphyKey?.trim();
+    const custom = load("smileTags").find((tag) => tag.id === tagId);
+    const q = (custom?.query || custom?.label || "").trim();
+    const hasMemes = giphyMemes.some((m) => m.tag === tagId);
+    if (key && custom && q && !hasMemes && !refreshing) {
+      void fetchTagMemes(tagId, q);
+    }
+  }
+  // 針對單一頁籤抓圖並合併（不重抓預設搞笑圖）。
+  async function fetchTagMemes(tagId: string, q: string) {
+    const key = load("smileEntry").giphyKey?.trim();
+    if (!key) return;
+    setRefreshing(true);
+    setStatus("載入這個頁籤的圖…");
+    try {
+      const fetched = await fetchGiphyMemes(key, [{ tag: tagId, q }], {
+        includeDefaults: false,
+      });
+      const tagged = fetched.filter((m) => m.tag === tagId);
+      if (tagged.length) {
+        setGiphyMemes((prev) => {
+          const ids = new Set(prev.map((m) => m.id));
+          return [...prev, ...tagged.filter((m) => !ids.has(m.id))];
+        });
+        setStatus("");
+      } else {
+        setStatus("這個頁籤暫時沒抓到圖，換個搜尋字試試。");
+      }
+    } catch {
+      setStatus("載入失敗，請稍後再試。");
+    } finally {
+      setRefreshing(false);
+    }
   }
   function move(delta: number) {
     if (!memes.length) return;
@@ -117,10 +161,7 @@ function SmileInner() {
       setRefreshing(true);
       setStatus("換一批中…");
       try {
-        const extra = load("smileTags")
-          .filter((tag) => Boolean(tag.query))
-          .map((tag) => ({ tag: tag.id, q: tag.query ?? "" }));
-        const fetched = await fetchGiphyMemes(key, extra);
+        const fetched = await fetchGiphyMemes(key, tagQueries());
         if (fetched.length) {
           const shuffled = shuffle(fetched);
           writeGiphyCache(shuffled);

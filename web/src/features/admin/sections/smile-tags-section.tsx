@@ -16,7 +16,7 @@ const FIELDS: ReadonlyArray<FieldDef<SmileTag>> = [
   },
   {
     name: "query",
-    label: "Giphy 搜尋關鍵字（建議用英文較準）",
+    label: "Giphy 搜尋關鍵字（留空就用頁籤名稱；建議填英文較準）",
     placeholder: "例如：cute cat / funny dog",
   },
 ];
@@ -34,7 +34,7 @@ export function SmileTagsSection() {
       primaryField="label"
       emptyItem={() => ({ id: id("tag"), label: "", query: "" })}
       summarize={(item) =>
-        item.query ? `搜尋：${item.query}` : "（未設搜尋字，需搭配 Giphy Key）"
+        item.query ? `搜尋：${item.query}` : `搜尋：${item.label}（用頁籤名稱）`
       }
       onSave={(items) => saveContent("smileTags", items)}
       addLabel="新增頁籤"

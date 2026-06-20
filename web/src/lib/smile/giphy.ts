@@ -76,8 +76,10 @@ export function writeGiphyCache(items: Meme[]): void {
 export async function fetchGiphyMemes(
   apiKey: string,
   extra: ReadonlyArray<{ tag: string; q: string }>,
+  options: { includeDefaults?: boolean } = {},
 ): Promise<Meme[]> {
-  const queries = [...DEFAULT_QUERIES, ...extra];
+  const { includeDefaults = true } = options;
+  const queries = includeDefaults ? [...DEFAULT_QUERIES, ...extra] : [...extra];
   const batches = await Promise.all(
     queries.map(async (query) => {
       const offset = Math.floor(Math.random() * 450);
