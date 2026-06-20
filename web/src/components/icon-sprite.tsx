@@ -19,6 +19,11 @@ export function IconSprite() {
         <rect x="3" y="14" width="7" height="7" rx="1" />
         <rect x="14" y="14" width="7" height="7" rx="1" />
       </symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24">
+        <path d="M4 6h16" />
+        <path d="M4 12h16" />
+        <path d="M4 18h16" />
+      </symbol>
       <symbol id="i-calculator" viewBox="0 0 24 24">
         <rect x="4" y="2" width="16" height="20" rx="2" />
         <path d="M8 6h8" />

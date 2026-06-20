@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { useState, type ComponentType } from "react";
 
 import { Icon } from "@/components/icon";
@@ -46,16 +48,38 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
-      <header className="mb-6 flex items-center justify-between gap-4">
-        <div>
-          <p className="text-amber text-sm font-bold tracking-widest">
-            Site Settings
-          </p>
-          <h1 className="text-2xl font-black">網站設定後台</h1>
+      <header className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          {/* Logo：點擊回前台首頁 */}
+          <Link
+            href="/"
+            aria-label="回到前台首頁"
+            className="hover:opacity-80"
+            title="回到前台首頁"
+          >
+            <Image
+              src="/brand/populove-logo.svg"
+              alt="POPULOVE"
+              width={120}
+              height={26}
+            />
+          </Link>
+          <div className="border-border hidden border-l pl-3 sm:block">
+            <p className="text-amber text-sm font-bold tracking-widest">
+              Site Settings
+            </p>
+            <h1 className="text-xl font-black">網站設定後台</h1>
+          </div>
         </div>
-        <button type="button" onClick={onLogout} className={adminGhostButton}>
-          登出
-        </button>
+        <div className="flex items-center gap-2">
+          <Link href="/" className={adminGhostButton}>
+            <Icon name="i-home" />
+            回前台
+          </Link>
+          <button type="button" onClick={onLogout} className={adminGhostButton}>
+            登出
+          </button>
+        </div>
       </header>
 
       <nav className="mb-8 flex flex-wrap gap-2" aria-label="設定分類">

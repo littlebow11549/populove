@@ -130,7 +130,7 @@ export function Header({
               aria-expanded={open}
               onClick={() => setOpen((value) => !value)}
             >
-              <Icon name="i-grid" className="h-6 w-6" />
+              <Icon name="i-menu" className="h-6 w-6" />
             </button>
 
             <div className="hidden items-center gap-5 text-sm font-bold sm:flex">
