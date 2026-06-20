@@ -37,6 +37,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# netlify (本機部署產生的暫存狀態，勿提交)
+.netlify
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
