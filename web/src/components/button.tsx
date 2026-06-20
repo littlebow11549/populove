@@ -14,7 +14,7 @@ interface ButtonProps {
 
 const VARIANTS: Record<Variant, string> = {
   primary:
-    "bg-brand text-[#15110d] shadow-lg shadow-brand/30 hover:brightness-105",
+    "bg-brand text-white shadow-lg shadow-brand/30 hover:brightness-105 [&_*]:text-white",
   light: "border border-border bg-surface text-ink hover:bg-panel",
 };
 

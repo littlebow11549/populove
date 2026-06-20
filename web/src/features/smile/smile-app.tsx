@@ -244,8 +244,11 @@ function SmileInner() {
         </p>
       </section>
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <nav className="flex flex-wrap gap-2" aria-label="迷因分類">
+      <div className="flex flex-col items-center gap-3">
+        <nav
+          className="flex flex-wrap justify-center gap-2"
+          aria-label="迷因分類"
+        >
           {tags.map((tag) => (
             <button
               key={tag.id}
@@ -309,7 +312,7 @@ function SmileInner() {
                 <h2 className="text-lg font-bold">
                   {meme.tag === "custom" ? "我的 Populove 圖" : meme.title}
                 </h2>
-                <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5">
+                <div className="mt-4 flex gap-2">
                   {reactionList.map((reaction) => {
                     const count = reactions[meme.id]?.counts[reaction] ?? 0;
                     const isPicked = picked === reaction;
@@ -320,8 +323,9 @@ function SmileInner() {
                         type="button"
                         onClick={() => react(reaction)}
                         disabled={disabled}
+                        aria-label={reaction}
                         className={cn(
-                          "flex flex-col items-center gap-0.5 rounded-xl border px-2 py-2.5 text-xs font-bold transition-transform active:scale-95",
+                          "flex min-w-0 flex-1 basis-0 flex-col items-center justify-center gap-0.5 overflow-hidden rounded-xl border px-1 py-3 transition-transform active:scale-95",
                           isPicked
                             ? "border-brand bg-brand/25 text-ink"
                             : "bg-panel-strong text-ink hover:border-brand border-white/20",
@@ -331,8 +335,7 @@ function SmileInner() {
                         <i className="text-ink text-lg leading-none not-italic">
                           {REACTION_FACES[reaction]}
                         </i>
-                        <span>{reaction}</span>
-                        <b className="text-amber">{count}</b>
+                        <b className="text-amber text-sm">{count}</b>
                       </button>
                     );
                   })}
