@@ -374,7 +374,7 @@ function SmileInner() {
       </div>
 
       <p className="text-muted text-center text-sm">
-        看一張迷因圖，替自己補一點微笑能量。給張正面反應還能賺 Populove 幣。
+        看一張迷因圖，替自己補一點微笑能量。每給一個反應會花 1 枚 Populove 幣。
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-3">

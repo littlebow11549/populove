@@ -9,8 +9,6 @@ import { readValue, writeValue } from "@/lib/store/storage";
 
 const COINS_KEY = "populoveSmileCoins";
 const REACTIONS_KEY = "populoveSmileReactions";
-const DAILY_KEY = "populoveSmileDailyEarn";
-const DAILY_LIMIT = 20;
 
 export const REACTIONS = [
   "加油",
@@ -67,10 +65,6 @@ export const FALLBACK_MEMES: Meme[] = [
   },
 ];
 
-function todayKey(): string {
-  return new Date().toISOString().slice(0, 10);
-}
-
 /** 洗牌（不可變，回傳新陣列）。供「換一批」打散順序使用。 */
 export function shuffle<T>(items: T[]): T[] {
   const arr = [...items];
@@ -102,27 +96,11 @@ export function addCoins(amount: number): number {
   return setCoins(getCoins() + amount);
 }
 
-function tryEarnCoin(): boolean {
-  const today = todayKey();
-  const daily = readValue<{ date: string; count: number }>(DAILY_KEY, {
-    date: today,
-    count: 0,
-  });
-  const current = daily.date === today ? daily : { date: today, count: 0 };
-  if (current.count >= DAILY_LIMIT) {
-    writeValue(DAILY_KEY, current);
-    return false;
-  }
-  writeValue(DAILY_KEY, { date: today, count: current.count + 1 });
-  setCoins(getCoins() + 1);
-  return true;
-}
-
 export function getReactions(): Record<string, MemeReaction> {
   return readValue<Record<string, MemeReaction>>(REACTIONS_KEY, {});
 }
 
-/** 對一張迷因表達反應；每張只能選一次，並嘗試賺一枚幣（每日上限）。 */
+/** 對一張迷因表達反應；每張只能選一次，每次反應扣 1 枚 Populove 幣（最低 0）。 */
 export function reactToMeme(
   memeId: string,
   reaction: string,
@@ -143,8 +121,8 @@ export function reactToMeme(
     },
   };
   writeValue(REACTIONS_KEY, next);
-  tryEarnCoin();
-  return { reactions: next, coins: getCoins() };
+  const coins = setCoins(getCoins() - 1);
+  return { reactions: next, coins };
 }
 
 function reactionScore(

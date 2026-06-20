@@ -8,6 +8,13 @@ export const metadata: Metadata = {
   title: "POPULOVE 客製化團體服 | 班服、制服、活動服、品牌周邊",
   description:
     "POPULOVE 提供客製化團體服、班服、公司制服、活動 T-Shirt、POLO 衫、帽 T、刺繡與印刷加工服務。",
+  // 關閉 iOS 自動把電話/日期/時間/地址變成藍色連結。
+  formatDetection: {
+    telephone: false,
+    date: false,
+    address: false,
+    email: false,
+  },
 };
 
 // 宣告原生深色，避免瀏覽器自動深色模式二次調色。
