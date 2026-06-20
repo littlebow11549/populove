@@ -1,5 +1,4 @@
 import { About } from "@/features/home/about";
-import { CategoryStrip } from "@/features/home/category-strip";
 import { ContactCards } from "@/features/home/contact-cards";
 import { FloatButtons } from "@/features/home/float-buttons";
 import { Footer } from "@/features/home/footer";
@@ -17,9 +16,8 @@ export default async function Home() {
 
   return (
     <>
-      <Header contact={data.contact} />
+      <Header contact={data.contact} categories={data.categories} />
       <main id="top">
-        <CategoryStrip categories={data.categories} />
         <Hero banners={data.banners} />
         <About />
         <OrderFlow steps={data.flow} />

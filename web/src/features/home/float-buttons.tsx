@@ -17,12 +17,13 @@ export function FloatButtons({ smileEntry, buttons }: FloatButtonsProps) {
   );
 
   return (
-    <div className="fixed right-4 bottom-5 z-50 flex flex-col items-end gap-3">
+    // 容器本身不吃點擊（pointer-events-none），只有按鈕可點，避免擋住底下的「設定」等連結。
+    <div className="pointer-events-none fixed right-4 bottom-5 z-50 flex flex-col items-end gap-3">
       {smileEntry.enabled && (
         <Link
           href={smileEntry.href}
           aria-label="進來笑一下"
-          className="to-brand flex h-16 w-16 -rotate-3 flex-col items-center justify-center gap-0.5 rounded-[22px_22px_22px_8px] border-2 border-white/60 bg-gradient-to-br from-[#ffdf70] text-[11px] font-black text-[#15110d] shadow-lg"
+          className="to-brand pointer-events-auto flex h-16 w-16 -rotate-3 flex-col items-center justify-center gap-0.5 rounded-[22px_22px_22px_8px] border-2 border-white/60 bg-gradient-to-br from-[#ffdf70] text-[11px] font-black text-[#15110d] shadow-lg"
         >
           <Image
             src={smileEntry.image}
@@ -46,7 +47,7 @@ export function FloatButtons({ smileEntry, buttons }: FloatButtonsProps) {
           </>
         );
         const classes =
-          "flex max-w-[220px] items-center gap-2 rounded-full border border-white/40 px-4 py-3 text-sm font-black shadow-lg";
+          "pointer-events-auto flex max-w-[220px] items-center gap-2 rounded-full border border-white/40 px-4 py-3 text-sm font-black shadow-lg";
 
         if (button.enabled && button.href) {
           return (
@@ -78,7 +79,7 @@ export function FloatButtons({ smileEntry, buttons }: FloatButtonsProps) {
         target="_blank"
         rel="noopener"
         aria-label="加入 LINE 好友"
-        className="flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-full bg-[#06c755] text-[11px] font-black text-white shadow-lg"
+        className="pointer-events-auto flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-full bg-[#06c755] text-[11px] font-black text-white shadow-lg"
       >
         <Icon name="i-message" className="h-5 w-5" />
         <span>LINE</span>
