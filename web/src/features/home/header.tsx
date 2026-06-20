@@ -73,6 +73,10 @@ export function Header({
   const stripArrow =
     "flex h-9 w-9 flex-none items-center justify-center rounded-full border border-border bg-panel text-xl text-text hover:text-ink disabled:opacity-30";
 
+  // 手機展開選單的項目：整列按鈕、文字置中、撐滿寬度。
+  const mobileItem =
+    "flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-panel px-4 py-3 text-text transition-transform hover:border-brand hover:text-ink active:scale-95";
+
   return (
     // 用 fragment 當根，讓 sticky 列的容器是整個頁面（body），捲動時才能持續置頂。
     <>
@@ -177,14 +181,14 @@ export function Header({
           </div>
 
           {open && (
-            <div className="animate-menu-in border-border bg-surface border-t px-6 py-3 sm:hidden">
-              <div className="flex flex-col gap-3 text-sm font-bold">
+            <div className="animate-menu-in border-border bg-surface border-t px-6 py-4 sm:hidden">
+              <div className="flex flex-col gap-2 text-sm font-bold">
                 {NAV_ITEMS.map((item) => (
                   <a
                     key={item.href}
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="text-text hover:text-ink inline-flex items-center gap-2"
+                    className={mobileItem}
                   >
                     <Icon name={item.icon} />
                     {item.label}
@@ -199,7 +203,7 @@ export function Header({
                       setCatOpen((value) => !value);
                       setOpen(false);
                     }}
-                    className="text-text hover:text-ink inline-flex items-center gap-2"
+                    className={mobileItem}
                   >
                     <Icon name="i-grid" />
                     產品分類

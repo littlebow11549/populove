@@ -40,6 +40,12 @@ html {
   color-scheme: dark;
 }
 
+/* iOS WebKit（含 iOS 版 Edge）會用系統藍當連結文字色，且 -webkit-text-fill-color
+   會蓋過一般 color。強制讓連結文字沿用自己的 color，避免按鈕文字變藍。 */
+a {
+  -webkit-text-fill-color: currentColor;
+}
+
 /* 點擊導覽錨點時平滑捲動；扣掉置頂列高度避免被蓋住。 */
 html {
   scroll-behavior: smooth;
