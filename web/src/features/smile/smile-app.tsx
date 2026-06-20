@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Icon } from "@/components/icon";
 import { normalizeFloatButtons } from "@/lib/data/normalize";
@@ -82,6 +82,7 @@ function SmileInner() {
   const [status, setStatus] = useState("");
   const [showPromos, setShowPromos] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const touchStartX = useRef<number | null>(null);
 
   // 後台有填 Giphy Key 且無有效快取時，向 Giphy 抓一批迷因。
   useEffect(() => {
@@ -152,6 +153,19 @@ function SmileInner() {
   function move(delta: number) {
     if (!memes.length) return;
     setIndex((current) => (current + delta + memes.length) % memes.length);
+  }
+  // 手機可用手指左右滑動換下一張迷因。
+  function onTouchStart(event: React.TouchEvent) {
+    touchStartX.current = event.touches[0]?.clientX ?? null;
+  }
+  function onTouchEnd(event: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const dx =
+      (event.changedTouches[0]?.clientX ?? touchStartX.current) -
+      touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(dx) < 40) return;
+    move(dx < 0 ? 1 : -1);
   }
   // 換一批：有 Giphy Key 就重新抓一批新圖；沒有就把現有清單重新洗牌。
   async function refreshBatch() {
@@ -283,7 +297,11 @@ function SmileInner() {
         >
           ‹
         </button>
-        <article className="border-border bg-panel flex-1 overflow-hidden rounded-2xl border">
+        <article
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          className="border-border bg-panel flex-1 touch-pan-y overflow-hidden rounded-2xl border"
+        >
           {meme ? (
             <>
               <div className="bg-surface relative aspect-video">
