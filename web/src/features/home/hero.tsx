@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/button";
 import { Icon } from "@/components/icon";
@@ -12,6 +12,7 @@ const INTERVAL = 5200;
 
 export function Hero({ banners }: { banners: Banner[] }) {
   const [index, setIndex] = useState(0);
+  const startX = useRef<number | null>(null);
 
   useEffect(() => {
     if (banners.length <= 1) return;
@@ -22,12 +23,32 @@ export function Hero({ banners }: { banners: Banner[] }) {
     return () => clearInterval(timer);
   }, [banners.length]);
 
+  // 手機可用手指左右滑動換 banner。
+  function onTouchStart(event: React.TouchEvent) {
+    startX.current = event.touches[0]?.clientX ?? null;
+  }
+  function onTouchEnd(event: React.TouchEvent) {
+    if (startX.current === null || banners.length <= 1) return;
+    const dx =
+      (event.changedTouches[0]?.clientX ?? startX.current) - startX.current;
+    startX.current = null;
+    if (Math.abs(dx) < 40) return;
+    setIndex(
+      (current) =>
+        (current + (dx < 0 ? 1 : -1) + banners.length) % banners.length,
+    );
+  }
+
   if (!banners.length) return null;
   const active = banners[index];
 
   return (
     <section aria-label="主視覺" className="relative isolate overflow-hidden">
-      <div className="relative h-[clamp(440px,72vh,640px)] w-full">
+      <div
+        className="relative h-[clamp(440px,72vh,640px)] w-full touch-pan-y"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
         {banners.map((banner, i) => (
           <Image
             key={banner.id}

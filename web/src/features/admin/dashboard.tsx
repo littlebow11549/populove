@@ -13,6 +13,7 @@ import { CategoriesSection } from "./sections/categories-section";
 import { ContactSection } from "./sections/contact-section";
 import { FlowSection } from "./sections/flow-section";
 import { ProductsSection } from "./sections/products-section";
+import { ReactionsSection } from "./sections/reactions-section";
 import { SmileSection } from "./sections/smile-section";
 import { SmileTagsSection } from "./sections/smile-tags-section";
 import { VersionsSection } from "./sections/versions-section";
@@ -27,6 +28,7 @@ const TABS = [
   { id: "flow", label: "訂購流程" },
   { id: "smile", label: "快捷按鈕設定" },
   { id: "smileTags", label: "笑一下頁籤" },
+  { id: "reactions", label: "笑一下反應" },
   { id: "versions", label: "版本回復" },
 ] as const;
 
@@ -41,6 +43,7 @@ const SECTIONS: Partial<Record<TabId, ComponentType>> = {
   flow: FlowSection,
   smile: SmileSection,
   smileTags: SmileTagsSection,
+  reactions: ReactionsSection,
   versions: VersionsSection,
 };
 

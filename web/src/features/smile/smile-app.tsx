@@ -328,7 +328,7 @@ function SmileInner() {
                           disabled && "opacity-40",
                         )}
                       >
-                        <i className="text-base not-italic">
+                        <i className="text-ink text-lg leading-none not-italic">
                           {REACTION_FACES[reaction]}
                         </i>
                         <span>{reaction}</span>
