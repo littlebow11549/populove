@@ -70,10 +70,32 @@ export function Hero({ banners }: { banners: Banner[] }) {
             <p className="text-amber text-sm font-bold tracking-widest">
               {active.label}
             </p>
-            <h1 className="max-w-xl text-3xl leading-tight font-black sm:text-5xl">
+            <h1
+              className="max-w-xl text-3xl leading-tight font-black sm:text-5xl"
+              style={
+                typeof active.titleSize === "number"
+                  ? { fontSize: active.titleSize }
+                  : undefined
+              }
+            >
               {active.title}
+              {active.title2 && (
+                <>
+                  <br />
+                  {active.title2}
+                </>
+              )}
             </h1>
-            <p className="text-text max-w-lg">{active.text}</p>
+            <p
+              className="text-text max-w-lg"
+              style={
+                typeof active.textSize === "number"
+                  ? { fontSize: active.textSize }
+                  : undefined
+              }
+            >
+              {active.text}
+            </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <Button href="#estimate" variant="primary">
                 <Icon name="i-calculator" />

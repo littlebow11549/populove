@@ -321,10 +321,10 @@ function SmileInner() {
                         onClick={() => react(reaction)}
                         disabled={disabled}
                         className={cn(
-                          "flex flex-col items-center gap-0.5 rounded-xl border px-2 py-2 text-xs font-bold",
+                          "flex flex-col items-center gap-0.5 rounded-xl border px-2 py-2.5 text-xs font-bold transition-transform active:scale-95",
                           isPicked
-                            ? "border-brand bg-brand/15 text-ink"
-                            : "border-border bg-surface text-text",
+                            ? "border-brand bg-brand/25 text-ink"
+                            : "bg-panel-strong text-ink hover:border-brand border-white/20",
                           disabled && "opacity-40",
                         )}
                       >

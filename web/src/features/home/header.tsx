@@ -113,7 +113,16 @@ export function Header({
       <div className="sticky top-0 z-40">
         <nav className="border-border bg-base/90 border-b backdrop-blur">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3">
-            <Link href="#top" aria-label="POPULOVE 首頁">
+            <Link
+              href="#top"
+              aria-label="回到頂端"
+              onClick={(event) => {
+                event.preventDefault();
+                setOpen(false);
+                setCatOpen(false);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
               <Image
                 src="/brand/populove-logo.svg"
                 alt="POPULOVE"
