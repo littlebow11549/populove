@@ -1,0 +1,12 @@
+# Netlify 設定：新版 Next.js 站（位於 repo 的 web/ 子目錄）
+# 這是新版預覽用的設定，與舊正式站（repo 根目錄、populove.org）完全分開。
+[build]
+  command = "next build"
+  publish = ".next"
+
+# 官方 Next.js Runtime：自動處理 SSR、API routes 等動態功能。
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NODE_VERSION = "22"
