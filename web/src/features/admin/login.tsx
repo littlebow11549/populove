@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 
 import { Icon } from "@/components/icon";
@@ -40,6 +42,20 @@ export function Login({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center px-6">
+      {/* Logo：點擊回前台首頁 */}
+      <Link
+        href="/"
+        aria-label="回到前台首頁"
+        title="回到前台首頁"
+        className="mb-6 self-center hover:opacity-80"
+      >
+        <Image
+          src="/brand/populove-logo.svg"
+          alt="POPULOVE"
+          width={150}
+          height={32}
+        />
+      </Link>
       <section className="border-border bg-panel rounded-2xl border p-8">
         <p className="text-amber text-sm font-bold tracking-widest">
           Admin Login
