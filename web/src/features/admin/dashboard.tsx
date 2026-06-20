@@ -14,6 +14,7 @@ import { ContactSection } from "./sections/contact-section";
 import { FlowSection } from "./sections/flow-section";
 import { ProductsSection } from "./sections/products-section";
 import { SmileSection } from "./sections/smile-section";
+import { SmileTagsSection } from "./sections/smile-tags-section";
 import { VersionsSection } from "./sections/versions-section";
 import { adminGhostButton } from "./ui";
 
@@ -25,6 +26,7 @@ const TABS = [
   { id: "cards", label: "諮詢卡片" },
   { id: "flow", label: "訂購流程" },
   { id: "smile", label: "快捷按鈕設定" },
+  { id: "smileTags", label: "笑一下頁籤" },
   { id: "versions", label: "版本回復" },
 ] as const;
 
@@ -38,6 +40,7 @@ const SECTIONS: Partial<Record<TabId, ComponentType>> = {
   cards: CardsSection,
   flow: FlowSection,
   smile: SmileSection,
+  smileTags: SmileTagsSection,
   versions: VersionsSection,
 };
 

@@ -24,6 +24,10 @@ export function IconSprite() {
         <path d="M4 12h16" />
         <path d="M4 18h16" />
       </symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24">
+        <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+        <path d="M21 4v5h-5" />
+      </symbol>
       <symbol id="i-calculator" viewBox="0 0 24 24">
         <rect x="4" y="2" width="16" height="20" rx="2" />
         <path d="M8 6h8" />

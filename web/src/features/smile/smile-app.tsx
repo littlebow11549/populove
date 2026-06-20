@@ -20,7 +20,9 @@ import {
   getReactions,
   getTags,
   reactToMeme,
+  shuffle,
   visibleReactions,
+  FALLBACK_MEMES,
   REACTION_FACES,
   type Meme,
   type MemeReaction,
@@ -66,6 +68,7 @@ function SmileInner() {
   const [index, setIndex] = useState(0);
   const [status, setStatus] = useState("");
   const [showPromos, setShowPromos] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   // 後台有填 Giphy Key 且無有效快取時，向 Giphy 抓一批迷因。
   useEffect(() => {
@@ -105,6 +108,36 @@ function SmileInner() {
   function move(delta: number) {
     if (!memes.length) return;
     setIndex((current) => (current + delta + memes.length) % memes.length);
+  }
+  // 換一批：有 Giphy Key 就重新抓一批新圖；沒有就把現有清單重新洗牌。
+  async function refreshBatch() {
+    setIndex(0);
+    const key = load("smileEntry").giphyKey?.trim();
+    if (key) {
+      setRefreshing(true);
+      setStatus("換一批中…");
+      try {
+        const extra = load("smileTags")
+          .filter((tag) => Boolean(tag.query))
+          .map((tag) => ({ tag: tag.id, q: tag.query ?? "" }));
+        const fetched = await fetchGiphyMemes(key, extra);
+        if (fetched.length) {
+          const shuffled = shuffle(fetched);
+          writeGiphyCache(shuffled);
+          setGiphyMemes(shuffled);
+          setStatus("換了一批新的迷因！");
+        } else {
+          setStatus("這批沒抓到新圖，先看現有的。");
+        }
+      } catch {
+        setStatus("換一批失敗，請稍後再試。");
+      } finally {
+        setRefreshing(false);
+      }
+    } else {
+      setGiphyMemes((prev) => shuffle(prev.length ? prev : FALLBACK_MEMES));
+      setStatus("已換一批（後台設定 Giphy Key 可載入更多圖）。");
+    }
   }
   function react(reaction: string) {
     if (!meme) return;
@@ -280,6 +313,21 @@ function SmileInner() {
           ›
         </button>
       </section>
+
+      <div className="flex justify-center">
+        <button
+          type="button"
+          onClick={() => void refreshBatch()}
+          disabled={refreshing}
+          className="bg-brand inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-black text-[#15110d] shadow-lg transition-transform hover:scale-105 active:scale-95 disabled:opacity-60"
+        >
+          <Icon
+            name="i-refresh"
+            className={cn("h-4 w-4", refreshing && "animate-spin")}
+          />
+          {refreshing ? "換一批中…" : "換一批"}
+        </button>
+      </div>
 
       <p className="text-muted text-center text-sm">
         看一張迷因圖，替自己補一點微笑能量。給張正面反應還能賺 Populove 幣。

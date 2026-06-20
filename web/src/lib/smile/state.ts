@@ -40,7 +40,7 @@ export interface MemeReaction {
   picked: string;
 }
 
-const FALLBACK_MEMES: Meme[] = [
+export const FALLBACK_MEMES: Meme[] = [
   {
     id: "funny-default-1",
     tag: "funny",
@@ -69,6 +69,16 @@ const FALLBACK_MEMES: Meme[] = [
 
 function todayKey(): string {
   return new Date().toISOString().slice(0, 10);
+}
+
+/** 洗牌（不可變，回傳新陣列）。供「換一批」打散順序使用。 */
+export function shuffle<T>(items: T[]): T[] {
+  const arr = [...items];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
 export function initialCoins(): number {
