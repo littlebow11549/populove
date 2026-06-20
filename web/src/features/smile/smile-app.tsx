@@ -332,7 +332,7 @@ function SmileInner() {
                           disabled && "opacity-40",
                         )}
                       >
-                        <i className="text-ink text-lg leading-none not-italic">
+                        <i className="text-2xl leading-none not-italic">
                           {REACTION_FACES[reaction]}
                         </i>
                         <b className="text-amber text-sm">{count}</b>

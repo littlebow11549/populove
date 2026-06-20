@@ -18,11 +18,11 @@ export const REACTIONS = [
   "Populove!!!",
 ] as const;
 export const REACTION_FACES: Record<string, string> = {
-  加油: "ㄒ_ㄒ",
-  還行: "= =?!",
-  "好~~~": "-_-*",
-  太強了: ">v<",
-  "Populove!!!": "^O^",
+  加油: "💪",
+  還行: "😐",
+  "好~~~": "😆",
+  太強了: "🤩",
+  "Populove!!!": "😍",
 };
 const POSITIVE = new Set(["好~~~", "太強了", "Populove!!!"]);
 
