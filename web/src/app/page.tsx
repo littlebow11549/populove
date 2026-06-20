@@ -8,6 +8,7 @@ import { Methods } from "@/features/home/methods";
 import { OrderFlow } from "@/features/home/order-flow";
 import { Products } from "@/features/home/products";
 import { QuoteForm } from "@/features/home/quote-form";
+import { Reveal } from "@/components/reveal";
 import { resolveSiteData } from "@/lib/data/resolve";
 import { fetchAllSiteData } from "@/lib/supabase/server";
 
@@ -19,12 +20,24 @@ export default async function Home() {
       <Header contact={data.contact} categories={data.categories} />
       <main id="top">
         <Hero banners={data.banners} />
-        <About />
-        <OrderFlow steps={data.flow} />
-        <Methods />
-        <Products products={data.products} />
-        <QuoteForm />
-        <ContactCards cards={data.contactCards} />
+        <Reveal>
+          <About />
+        </Reveal>
+        <Reveal>
+          <OrderFlow steps={data.flow} />
+        </Reveal>
+        <Reveal>
+          <Methods />
+        </Reveal>
+        <Reveal>
+          <Products products={data.products} />
+        </Reveal>
+        <Reveal>
+          <QuoteForm />
+        </Reveal>
+        <Reveal>
+          <ContactCards cards={data.contactCards} />
+        </Reveal>
       </main>
       <Footer />
       <FloatButtons smileEntry={data.smileEntry} buttons={data.floatButtons} />

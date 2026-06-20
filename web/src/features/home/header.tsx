@@ -125,7 +125,7 @@ export function Header({
 
             <button
               type="button"
-              className="text-ink sm:hidden"
+              className="text-ink transition-transform active:scale-90 sm:hidden"
               aria-label="開啟選單"
               aria-expanded={open}
               onClick={() => setOpen((value) => !value)}
@@ -151,7 +151,7 @@ export function Header({
                   aria-controls="category-panel"
                   onClick={() => setCatOpen((value) => !value)}
                   className={cn(
-                    "inline-flex items-center gap-2 rounded-lg border px-3 py-1.5",
+                    "inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 transition-transform active:scale-95",
                     catOpen
                       ? "border-brand text-amber"
                       : "border-border text-text hover:text-ink",
@@ -168,7 +168,7 @@ export function Header({
           </div>
 
           {open && (
-            <div className="border-border bg-surface border-t px-6 py-3 sm:hidden">
+            <div className="animate-menu-in border-border bg-surface border-t px-6 py-3 sm:hidden">
               <div className="flex flex-col gap-3 text-sm font-bold">
                 {NAV_ITEMS.map((item) => (
                   <a
