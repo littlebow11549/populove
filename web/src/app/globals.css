@@ -34,6 +34,12 @@ body {
   min-height: 100%;
 }
 
+/* 宣告本站原生深色，避免瀏覽器（如 Edge）自動深色模式二次調色，
+   造成按鈕等文字顏色跑掉。 */
+html {
+  color-scheme: dark;
+}
+
 /* 點擊導覽錨點時平滑捲動；扣掉置頂列高度避免被蓋住。 */
 html {
   scroll-behavior: smooth;
