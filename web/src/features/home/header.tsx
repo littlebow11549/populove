@@ -82,7 +82,7 @@ export function Header({
     <>
       {/* 上方聯絡資訊列（小螢幕隱藏） */}
       <div className="border-border bg-surface/60 text-muted hidden border-b text-xs sm:block">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-1 px-6 py-2">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-end gap-x-6 gap-y-1 px-6 py-2">
           <a
             className="hover:text-ink inline-flex items-center gap-1.5"
             href={`https://line.me/ti/p/~${contact.line}`}
