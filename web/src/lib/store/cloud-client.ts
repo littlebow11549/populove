@@ -60,3 +60,40 @@ export async function pushToCloud(
     return false;
   }
 }
+
+type MemeReactionCounts = Record<string, Record<string, number>>;
+
+/** 讀取雲端共享的迷因反應計數（所有訪客累計）。 */
+export async function fetchMemeReactions(): Promise<MemeReactionCounts> {
+  if (!cloudConfigured) return {};
+  try {
+    const res = await fetch(
+      `${URL}/rest/v1/site_data?key=eq.memeReactions&select=value`,
+      { headers: { apikey: KEY, Authorization: `Bearer ${KEY}` } },
+    );
+    if (!res.ok) return {};
+    const rows = (await res.json()) as { value: MemeReactionCounts }[];
+    return rows[0]?.value ?? {};
+  } catch {
+    return {};
+  }
+}
+
+/** 把某張圖的某個反應 +1，回傳該圖最新計數（失敗回 null）。 */
+export async function pushReaction(
+  memeId: string,
+  reaction: string,
+): Promise<Record<string, number> | null> {
+  try {
+    const res = await fetch("/api/react", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ memeId, reaction }),
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { counts?: Record<string, number> };
+    return data.counts ?? null;
+  } catch {
+    return null;
+  }
+}

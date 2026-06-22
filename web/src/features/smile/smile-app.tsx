@@ -27,7 +27,11 @@ import {
   type Meme,
   type MemeReaction,
 } from "@/lib/smile/state";
-import { hydrateFromCloud } from "@/lib/store/cloud-client";
+import {
+  fetchMemeReactions,
+  hydrateFromCloud,
+  pushReaction,
+} from "@/lib/store/cloud-client";
 import { load, save } from "@/lib/store/index";
 import { resizeImageToDataUrl } from "@/lib/utils/image";
 import { cn } from "@/lib/utils/cn";
@@ -82,7 +86,17 @@ function SmileInner() {
   const [status, setStatus] = useState("");
   const [showPromos, setShowPromos] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [globalCounts, setGlobalCounts] = useState<
+    Record<string, Record<string, number>>
+  >({});
   const touchStartX = useRef<number | null>(null);
+
+  // 載入雲端共享的反應計數（每張圖收到多少反應，所有訪客累計）。
+  useEffect(() => {
+    fetchMemeReactions()
+      .then(setGlobalCounts)
+      .catch(() => {});
+  }, []);
 
   // 後台有填 Giphy Key 且無有效快取時，向 Giphy 抓一批迷因。
   useEffect(() => {
@@ -202,9 +216,21 @@ function SmileInner() {
   }
   function react(reaction: string) {
     if (!meme) return;
-    const result = reactToMeme(meme.id, reaction);
+    const memeId = meme.id;
+    const result = reactToMeme(memeId, reaction);
     setReactions(result.reactions);
     setCoins(result.coins);
+    // 樂觀更新這張圖的共享反應計數，並推到雲端累計。
+    setGlobalCounts((prev) => {
+      const mc = { ...(prev[memeId] ?? {}) };
+      mc[reaction] = (mc[reaction] ?? 0) + 1;
+      return { ...prev, [memeId]: mc };
+    });
+    void pushReaction(memeId, reaction).then((counts) => {
+      if (counts) setGlobalCounts((prev) => ({ ...prev, [memeId]: counts }));
+    });
+    // 反應後稍待片刻讓使用者看到數字，再自動換下一張。
+    window.setTimeout(() => move(1), 650);
   }
   async function handleUpload(file: File) {
     const dataUrl = await resizeImageToDataUrl(file, 720);
@@ -338,7 +364,7 @@ function SmileInner() {
                 </h2>
                 <div className="mt-4 flex gap-2">
                   {reactionList.map((reaction) => {
-                    const count = reactions[meme.id]?.counts[reaction] ?? 0;
+                    const count = globalCounts[meme.id]?.[reaction] ?? 0;
                     const isPicked = picked === reaction;
                     const disabled = picked !== "" && !isPicked;
                     return (

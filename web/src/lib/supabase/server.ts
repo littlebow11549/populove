@@ -35,6 +35,22 @@ export async function fetchAllSiteData(): Promise<Record<string, unknown>> {
   }
 }
 
+/** 讀取單一 key 的 value（targeted，不會把整張表拉回來）。 */
+export async function fetchSiteValue<T>(key: string): Promise<T | null> {
+  if (!serverSupabaseReady) return null;
+  try {
+    const res = await fetch(
+      `${URL}/rest/v1/site_data?key=eq.${encodeURIComponent(key)}&select=value`,
+      { headers: headers(), cache: "no-store" },
+    );
+    if (!res.ok) return null;
+    const rows = (await res.json()) as { value: unknown }[];
+    return (rows[0]?.value as T) ?? null;
+  } catch {
+    return null;
+  }
+}
+
 /** 寫入（upsert）一個內容區塊，並記錄更新時間。 */
 export async function upsertSiteData(
   key: string,
