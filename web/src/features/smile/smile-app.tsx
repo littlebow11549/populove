@@ -167,9 +167,15 @@ function SmileInner() {
     if (Math.abs(dx) < 40) return;
     move(dx < 0 ? 1 : -1);
   }
-  // 換一批：有 Giphy Key 就重新抓一批新圖；沒有就把現有清單重新洗牌。
+  // 換一批：快取還新鮮就直接重新洗牌現有的一大批（不打 GIPHY，省呼叫次數）；
+  // 快取過期或還沒有圖時，才真的去抓一批新的。
   async function refreshBatch() {
     setIndex(0);
+    if (giphyMemes.length > 0 && readGiphyCache()) {
+      setGiphyMemes((prev) => shuffle(prev));
+      setStatus("換了一批！");
+      return;
+    }
     const key = load("smileEntry").giphyKey?.trim();
     if (key) {
       setRefreshing(true);
@@ -444,6 +450,15 @@ function SmileInner() {
           ))}
         </div>
       )}
+
+      <a
+        href="https://giphy.com"
+        target="_blank"
+        rel="noopener"
+        className="text-muted hover:text-ink mt-2 text-center text-xs font-bold tracking-wide"
+      >
+        Powered by GIPHY
+      </a>
     </main>
   );
 }

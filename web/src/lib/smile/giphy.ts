@@ -7,9 +7,8 @@ import { readValue, writeValue } from "@/lib/store/storage";
 import type { Meme } from "./state";
 
 const CACHE_KEY = "populoveGiphyMemeCache";
-const CACHE_DURATION = 60 * 60 * 1000;
+const CACHE_DURATION = 6 * 60 * 60 * 1000;
 const DEFAULT_QUERIES: ReadonlyArray<{ tag: string; q: string }> = [
-  { tag: "funny", q: "popular funny reaction meme" },
   { tag: "funny", q: "funny meme reaction" },
 ];
 
