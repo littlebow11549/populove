@@ -15,8 +15,30 @@ import { fetchAllSiteData } from "@/lib/supabase/server";
 export default async function Home() {
   const data = resolveSiteData(await fetchAllSiteData());
 
+  // 結構化資料（Google 商家／組織資訊），讓搜尋引擎更好理解本站。
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    name: "POPULOVE 客製化團體服",
+    url: "https://populove.org",
+    logo: "https://populove.org/brand/populove-logo.svg",
+    image: "https://populove.org/banners/banner-populove-fashion.png",
+    description:
+      "客製化團體服、班服、公司制服、活動服與品牌周邊，提供印刷、刺繡與 DTF 轉印加工。",
+    email: data.contact.email,
+    telephone: data.contact.phone,
+    priceRange: "$$",
+    sameAs: data.contact.line
+      ? [`https://line.me/ti/p/~${data.contact.line}`]
+      : undefined,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header contact={data.contact} categories={data.categories} />
       <main id="top">
         <Hero banners={data.banners} />
