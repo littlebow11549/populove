@@ -239,10 +239,56 @@ def render_report(leads, top, month_new, month_chg, today):
     return html_str, "\n".join(lines)
 
 
-def write_outputs(leads, top, html_str, today):
+def render_markdown(leads, top, month_new, month_chg, today):
+    """GitHub Issue 用的 Markdown 報告(零設定通知管道)。"""
+    def cap_fmt(c):
+        if c >= 100_000_000:
+            return f"{c/100_000_000:.1f} 億"
+        if c >= 10_000:
+            return f"{c//10_000} 萬"
+        return str(c)
+
+    lines = [
+        f"資料月份:設立清冊 {month_new}/變更清冊 {month_chg}(經濟部商工開放資料)",
+        f"|電話補查:台灣公司網|共 {len(leads)} 家,重點 {len(top)} 家",
+        "", "## 🎯 今日 10 通重點電話", ""]
+    for i, ld in enumerate(top, 1):
+        lk = lookup_links(ld)
+        phone = f"**{ld['phone']}**" if ld["phone"] else \
+            f"尚無公開電話 → [Google 查詢]({lk['google']})"
+        lines += [
+            f"### {i}. {ld['name']}({ld['type']},評分 {ld['score']})",
+            f"- 📞 {phone}",
+            f"- 統編 {ld['tax_id']}|代表人 {ld['boss']}|資本額 {cap_fmt(ld['capital'])}|{ld['date']}",
+            f"- 📍 {ld['addr']}",
+            f"- **產業**:{ld['industry']}({(ld['biz'] or '登記資料未列')[:80]})",
+            f"- **推測需求**:{ld['items']}",
+            f"- **攻略**:{ld['pitch']}",
+            f"- [台灣公司網]({lk['twincn']}) · [商工登記]({lk['findbiz']}) · [Google]({lk['google']})",
+            ""]
+    rest = [ld for ld in leads if ld not in top]
+    lines += [f"## 📋 其餘 {len(rest)} 家備選", "",
+              "|型態|公司|電話|產業|推測需求|資本額|評分|",
+              "|---|---|---|---|---|---|---|"]
+    for ld in rest:
+        lk = lookup_links(ld)
+        ph = ld["phone"] or f"[查]({lk['google']})"
+        lines.append(f"|{ld['type']}|[{ld['name']}]({lk['twincn']})|{ph}"
+                     f"|{ld['industry']}|{ld['items']}|{cap_fmt(ld['capital'])}|{ld['score']}|")
+    lines += ["", "> 完整 CSV 在本次執行的 Actions Artifact 可下載。",
+              "> 公司登記資料依法不含電話;新設公司多數尚無公開電話,點連結一鍵查詢。"]
+    return "\n".join(lines)
+
+
+def write_outputs(leads, top, html_str, today, md_str=""):
     os.makedirs("out", exist_ok=True)
     with open(f"out/leads_{today}.html", "w", encoding="utf-8") as f:
         f.write(html_str)
+    if md_str:
+        with open("out/issue_body.md", "w", encoding="utf-8") as f:
+            f.write(md_str)
+        with open("out/issue_title.txt", "w", encoding="utf-8") as f:
+            f.write(f"👔 每日獲客名單 {today}(重點 {len(top)} 通)")
     with open(f"out/leads_{today}.csv", "w", encoding="utf-8-sig", newline="") as f:
         w = csv.writer(f)
         w.writerow(["重點", "型態", "公司名稱", "統一編號", "電話", "產業", "推測需求",
@@ -313,7 +359,8 @@ def main():
     print(f"完成:{len(leads)} 家入選,{len(with_phone)} 家有電話,重點 {len(top)} 家")
 
     html_str, text_str = render_report(leads, top, month_new, month_chg, today)
-    write_outputs(leads, top, html_str, today)
+    md_str = render_markdown(leads, top, month_new, month_chg, today)
+    write_outputs(leads, top, html_str, today, md_str)
     send_mail(html_str, text_str, today, f"out/leads_{today}.csv")
     print("=== 完成 ===")
 

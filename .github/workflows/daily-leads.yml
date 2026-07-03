@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   leads:
@@ -27,6 +28,18 @@ jobs:
           MAIL_APP_PASSWORD: ${{ secrets.MAIL_APP_PASSWORD }}
           LEADS_TO_EMAIL: derrickj.populove@gmail.com
         run: python daily_leads.py
+
+      - name: 發佈報告到 GitHub Issue(自動通知,免設定)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f leadgen/out/issue_body.md ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" \
+              --title "$(cat leadgen/out/issue_title.txt)" \
+              --body-file leadgen/out/issue_body.md \
+              --assignee "${GITHUB_REPOSITORY_OWNER}"
+          fi
 
       - name: 保留報告副本(14 天)
         if: always()
