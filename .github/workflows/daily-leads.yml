@@ -1,0 +1,38 @@
+name: 每日獲客名單
+
+on:
+  schedule:
+    # UTC 01:23 = 台北時間 09:23,每天執行
+    - cron: '23 1 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  leads:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 產生名單並寄信
+        working-directory: leadgen
+        env:
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_APP_PASSWORD: ${{ secrets.MAIL_APP_PASSWORD }}
+          LEADS_TO_EMAIL: derrickj.populove@gmail.com
+        run: python daily_leads.py
+
+      - name: 保留報告副本(14 天)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: leads-report
+          path: leadgen/out/
+          retention-days: 14
+          if-no-files-found: ignore
