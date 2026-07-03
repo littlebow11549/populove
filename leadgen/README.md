@@ -2,7 +2,7 @@
 
 每天台北時間 **09:23** 自動執行,從政府公司登記公開資料找出 **50 家**潛在客戶、
 評估產業與製服需求、產出**攻略法**,並篩出**10 通重點電話**,
-寄到 **derrickj.populove@gmail.com**。
+寄到 **derrickj.populove@gmail.com** 與 **derrick.populove@gmail.com**。
 
 ## 運作方式(零 AI token 成本)
 
@@ -30,7 +30,7 @@
 並指派給 repo 擁有者,GitHub 會**自動發通知信**到你 GitHub 帳號的信箱,
 手機 GitHub App 也會推播。完整 CSV 在 Actions 的 Artifact 可下載。
 
-## (可選)直接寄 Email 到 derrickj.populove@gmail.com
+## (可選)直接寄 Email 到 derrickj.populove@gmail.com、derrick.populove@gmail.com
 
 想要正式的 Email 報告(HTML 精美版 + CSV 附件直接進信箱),需要一組
 Gmail 應用程式密碼——這一步涉及 Google 帳號登入,只能由本人操作:

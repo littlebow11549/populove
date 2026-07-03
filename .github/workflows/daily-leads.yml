@@ -40,7 +40,7 @@ jobs:
         env:
           MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
           MAIL_APP_PASSWORD: ${{ secrets.MAIL_APP_PASSWORD }}
-          LEADS_TO_EMAIL: derrickj.populove@gmail.com
+          LEADS_TO_EMAIL: derrickj.populove@gmail.com,derrick.populove@gmail.com
         run: python daily_leads.py
 
       - name: 發佈報告到 GitHub Issue(自動通知,免設定)
