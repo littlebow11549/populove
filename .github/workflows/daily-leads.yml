@@ -15,13 +15,27 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: 隱私安全鎖:repo 公開時不執行(名單屬客戶資料,不得公開)
+        id: privacy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PRIVATE=$(gh api "repos/${GITHUB_REPOSITORY}" --jq .private)
+          echo "private=${PRIVATE}" >> "$GITHUB_OUTPUT"
+          if [ "$PRIVATE" != "true" ]; then
+            echo "::warning::repo 目前是公開的,為保護客戶名單,今天不產生/發佈名單。請到 Settings → Danger Zone → Change visibility 改成 Private。"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.privacy.outputs.private == 'true'
 
       - uses: actions/setup-python@v5
+        if: steps.privacy.outputs.private == 'true'
         with:
           python-version: '3.12'
 
       - name: 產生名單並寄信
+        if: steps.privacy.outputs.private == 'true'
         working-directory: leadgen
         env:
           MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
@@ -30,7 +44,7 @@ jobs:
         run: python daily_leads.py
 
       - name: 發佈報告到 GitHub Issue(自動通知,免設定)
-        if: always()
+        if: steps.privacy.outputs.private == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -42,7 +56,7 @@ jobs:
           fi
 
       - name: 保留報告副本(14 天)
-        if: always()
+        if: steps.privacy.outputs.private == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: leads-report

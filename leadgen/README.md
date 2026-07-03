@@ -16,6 +16,14 @@
 
 執行平台是 GitHub Actions(免費額度內,每天約 5 分鐘),**不經過任何 AI API**。
 
+## 🔒 隱私保護(重要)
+
+客戶名單屬營業資料,**workflow 內建安全鎖:偵測到 repo 是公開狀態時,
+不會產生、也不會發佈任何名單**(Issue、Artifact、log 都不會有客戶資料)。
+啟用整套系統前,請先把 repo 改成 Private:
+**GitHub repo → Settings → 最下方 Danger Zone → Change visibility → Make private**。
+改完後隔天起自動恢復正常運作,Netlify 部署不受影響。
+
 ## 報告怎麼收(免設定,已自動生效)
 
 每天執行完會自動在 repo 開一則 **GitHub Issue**(標題:👔 每日獲客名單 YYYY-MM-DD)
