@@ -1,4 +1,29 @@
 window.POPULOVE_SITE_DATA = {
+  "__meta": {
+    "siteVersion": 1783180800000,
+    "exportedAt": "2026-07-04T16:00:00.000Z",
+    "populoveProducts": {
+      "updatedAt": 1783180800000
+    },
+    "populoveBanners": {
+      "updatedAt": 1783180800000
+    },
+    "populoveContactInfo": {
+      "updatedAt": 1783180800000
+    },
+    "populoveContactCards": {
+      "updatedAt": 1783180800000
+    },
+    "populoveOrderFlow": {
+      "updatedAt": 1783180800000
+    },
+    "populoveSmileEntry": {
+      "updatedAt": 1783180800000
+    },
+    "populovePromoLinks": {
+      "updatedAt": 1783180800000
+    }
+  },
   "populoveProducts": [
     {
       "id": "p-1781439250592-679ce384aa2cc",

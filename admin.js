@@ -130,9 +130,10 @@ function id(prefix){return `${prefix}-${Date.now()}-${Math.random().toString(16)
 function publishedTime(key){return Number(window.POPULOVE_SITE_DATA?.__meta?.[key]?.updatedAt||0);}
 function localTime(key){return Number(localStorage.getItem(`${key}UpdatedAt`)||0);}
 function publishedSiteVersion(){const meta=window.POPULOVE_SITE_DATA?.__meta||{}; const times=Object.values(meta).map((item)=>Number(item?.updatedAt||0)).filter(Boolean); return Number(meta.siteVersion||Math.max(0,...times));}
+function hasLegacyMissingAsset(value){try{return /"image"\s*:\s*"\/(?:banners|products|brand)\//.test(JSON.stringify(value));}catch{return false;}}
 function versionStorageKeys(){return new Set([STORAGE.versionSettings, STORAGE.versionHistory]);}
 function syncPublishedSettings(){const version=publishedSiteVersion(); if(!version||Number(localStorage.getItem(PUBLISHED_VERSION_KEY)||0)>=version)return; Object.values(STORAGE).forEach((key)=>{if(Object.prototype.hasOwnProperty.call(window.POPULOVE_SITE_DATA||{},key)){localStorage.setItem(key,JSON.stringify(window.POPULOVE_SITE_DATA[key]));localStorage.setItem(`${key}UpdatedAt`,String(publishedTime(key)||version));}}); localStorage.setItem(PUBLISHED_VERSION_KEY,String(version));}
-function read(key, fallback){let data=null;try{data=JSON.parse(localStorage.getItem(key)||"null");}catch{} const published=window.POPULOVE_SITE_DATA?.[key]; const usePublished=publishedTime(key)>localTime(key); if(usePublished&&published){try{localStorage.setItem(key,JSON.stringify(published));localStorage.setItem(`${key}UpdatedAt`,String(publishedTime(key)));}catch{} return Array.isArray(fallback)?published:{...fallback,...published};} if(Array.isArray(fallback)&&Array.isArray(data))return data; if(!Array.isArray(fallback)&&data&&typeof data==="object")return data; if(Array.isArray(fallback))return Array.isArray(published)&&published.length?published:[...fallback]; return published&&typeof published==="object"?published:{...fallback};}
+function read(key, fallback){let data=null;try{data=JSON.parse(localStorage.getItem(key)||"null");}catch{} const published=window.POPULOVE_SITE_DATA?.[key]; if(published&&hasLegacyMissingAsset(data)){try{localStorage.setItem(key,JSON.stringify(published));localStorage.setItem(`${key}UpdatedAt`,String(publishedTime(key)||publishedSiteVersion()||Date.now()));}catch{} return Array.isArray(fallback)?published:{...fallback,...published};} const usePublished=publishedTime(key)>localTime(key); if(usePublished&&published){try{localStorage.setItem(key,JSON.stringify(published));localStorage.setItem(`${key}UpdatedAt`,String(publishedTime(key)));}catch{} return Array.isArray(fallback)?published:{...fallback,...published};} if(Array.isArray(fallback)&&Array.isArray(data))return data; if(!Array.isArray(fallback)&&data&&typeof data==="object")return data; if(Array.isArray(fallback))return Array.isArray(published)&&published.length?published:[...fallback]; return published&&typeof published==="object"?published:{...fallback};}
 let versionSnapshotTimer;
 let suppressVersionSnapshot = false;
 function save(key, data){try{localStorage.setItem(key, JSON.stringify(data)); localStorage.setItem(`${key}UpdatedAt`, String(Date.now()));}catch(error){}}
@@ -380,7 +381,6 @@ bindRowActions("#flowList",STORAGE.flow,defaults.flow,"flow","#flowStatus");
 syncPublishedSettings();
 ensureLockedDefaultVersion();
 setVisible(sessionStorage.getItem(ADMIN_SESSION_KEY)==="active"); refreshAdminIdle();
-
 
 
 

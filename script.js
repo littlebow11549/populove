@@ -95,6 +95,13 @@ function publishedSiteVersion() {
   const times = Object.values(meta).map((item) => Number(item?.updatedAt || 0)).filter(Boolean);
   return Number(meta.siteVersion || Math.max(0, ...times));
 }
+function hasLegacyMissingAsset(value) {
+  try {
+    return /"image"\s*:\s*"\/(?:banners|products|brand)\//.test(JSON.stringify(value));
+  } catch (error) {
+    return false;
+  }
+}
 function syncPublishedData(keys) {
   try {
     const version = publishedSiteVersion();
@@ -114,6 +121,10 @@ function readData(key, fallback) {
   let data = null;
   try { data = JSON.parse(localStorage.getItem(key) || "null"); } catch (error) {}
   const published = window.POPULOVE_SITE_DATA?.[key];
+  if (published && hasLegacyMissingAsset(data)) {
+    try { localStorage.setItem(key, JSON.stringify(published)); localStorage.setItem(`${key}UpdatedAt`, String(publishedTime(key) || publishedSiteVersion() || Date.now())); } catch (error) {}
+    return Array.isArray(fallback) ? published : { ...fallback, ...published };
+  }
   if (published && publishedTime(key) > localTime(key)) {
     try { localStorage.setItem(key, JSON.stringify(published)); localStorage.setItem(`${key}UpdatedAt`, String(publishedTime(key))); } catch (error) {}
     return Array.isArray(fallback) ? published : { ...fallback, ...published };
@@ -374,7 +385,6 @@ window.addEventListener("storage", (event) => {
 });
 
 [renderContactInfo, renderBanners, renderFlow, renderContactCards, renderProducts, renderCategories, renderSmileEntry, renderFloatButtons, startSlider].forEach((fn) => { try { fn(); } catch (error) { console.warn("init error", error); } });
-
 
 
 
