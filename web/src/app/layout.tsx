@@ -60,6 +60,9 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
+  verification: {
+    google: "pvDuebf8TR6j2I0jdNfjJp0OGtgMbn7RzNgctHGAbZM",
+  },
   icons: {
     icon: { url: "/brand/populove-bear.svg", type: "image/svg+xml" },
     apple: "/brand/populove-bear.svg",
