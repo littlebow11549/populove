@@ -35,6 +35,8 @@ export const metadata: Metadata = {
   authors: [{ name: "POPULOVE" }],
   creator: "POPULOVE",
   alternates: { canonical: "/" },
+  // 分享圖改用 app/opengraph-image.png 慣例（Next 自動產生 og:image / twitter:image
+  // 的可靠路徑），避免 public/ 直接路徑 404。
   openGraph: {
     type: "website",
     locale: "zh_TW",
@@ -42,18 +44,11 @@ export const metadata: Metadata = {
     siteName: "POPULOVE 客製化團體服",
     title: TITLE,
     description: DESCRIPTION,
-    images: [
-      {
-        url: "/banners/banner-populove-fashion.png",
-        alt: "POPULOVE 客製化團體服",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    images: ["/banners/banner-populove-fashion.png"],
   },
   robots: {
     index: true,
@@ -63,10 +58,8 @@ export const metadata: Metadata = {
   verification: {
     google: "pvDuebf8TR6j2I0jdNfjJp0OGtgMbn7RzNgctHGAbZM",
   },
-  icons: {
-    icon: { url: "/brand/populove-bear.svg", type: "image/svg+xml" },
-    apple: "/brand/populove-bear.svg",
-  },
+  // favicon 改用 app/ 目錄慣例（app/icon.svg、app/apple-icon.png），由 Next
+  // 自己產生可靠路徑，避免 public/ 直接路徑在部署上 404 的問題。
   // 關閉 iOS 自動把電話/日期/時間/地址變成藍色連結。
   formatDetection: {
     telephone: false,
