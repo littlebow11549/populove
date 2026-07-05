@@ -12,6 +12,10 @@ import { Reveal } from "@/components/reveal";
 import { resolveSiteData } from "@/lib/data/resolve";
 import { fetchAllSiteData } from "@/lib/supabase/server";
 
+// 首頁內容須即時反映後台存檔（雲端資料），不可在 build 時定格：
+// 改為每次請求都在伺服器端重新讀取 Supabase。
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const data = resolveSiteData(await fetchAllSiteData());
 
