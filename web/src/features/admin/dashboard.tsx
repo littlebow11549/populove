@@ -7,6 +7,7 @@ import { useState, type ComponentType } from "react";
 import { Icon } from "@/components/icon";
 import { cn } from "@/lib/utils/cn";
 
+import { CloudStatus } from "./cloud-status";
 import { BannersSection } from "./sections/banners-section";
 import { CardsSection } from "./sections/cards-section";
 import { CategoriesSection } from "./sections/categories-section";
@@ -78,6 +79,7 @@ export function Dashboard({ onLogout }: { onLogout: () => void }) {
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <CloudStatus />
           <Link href="/" className={adminGhostButton}>
             <Icon name="i-home" />
             回前台

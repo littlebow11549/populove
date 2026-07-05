@@ -35,6 +35,20 @@ export async function fetchAllSiteData(): Promise<Record<string, unknown>> {
   }
 }
 
+/** 健康檢查：金鑰有設定、且實際讀得到資料表才算健康。 */
+export async function pingCloud(): Promise<boolean> {
+  if (!serverSupabaseReady) return false;
+  try {
+    const res = await fetch(`${URL}/rest/v1/site_data?select=key&limit=1`, {
+      headers: headers(),
+      cache: "no-store",
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 /** 讀取單一 key 的 value（targeted，不會把整張表拉回來）。 */
 export async function fetchSiteValue<T>(key: string): Promise<T | null> {
   if (!serverSupabaseReady) return null;
