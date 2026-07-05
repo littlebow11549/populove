@@ -135,19 +135,18 @@ function reactionScore(
   return score;
 }
 
-/** 顯示用的類別清單（固定三類 + 後台自訂類別）。 */
+/** 顯示用的類別清單（固定類別 + 後台自訂類別，「自創」固定排最後）。 */
 export function getTags(): { id: string; label: string }[] {
   const display = load("smileDisplay");
   const fixed = [
     { id: "hot", label: "熱門" },
     { id: "funny", label: "搞笑" },
-    { id: "custom", label: "自創" },
   ].filter((tag) => tag.id !== "hot" || display.showHotTag !== false);
   const custom = load("smileTags").map((tag) => ({
     id: tag.id,
     label: tag.label,
   }));
-  return [...fixed, ...custom];
+  return [...fixed, ...custom, { id: "custom", label: "自創" }];
 }
 
 /** 目前可見的反應（依後台設定）。 */
