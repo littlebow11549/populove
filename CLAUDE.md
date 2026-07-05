@@ -31,6 +31,13 @@
   `NEXT_PUBLIC_SUPABASE_URL`、`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`、
   `SUPABASE_SECRET_KEY`（密）、`ADMIN_SESSION_SECRET`（密）。
 - 金鑰只放 `web/.env.local`（已 gitignore）與 Netlify 環境變數，切勿提交進版控。
+- **部署後必做驗證**：`curl -s https://populove.org/api/health` 必須回 `{"ok":true,...}`。
+  回 false 表示伺服器連不上雲端內容庫（多半是環境變數缺漏），視同部署失敗。
+- 防呆機制（2026-07-05 事故後加入，勿移除）：
+  - `web/scripts/check-env.mjs`：正式建置缺必要環境變數會直接中止。
+  - `/api/health`：健康檢查端點；後台右上角的雲端狀態指示燈也讀這裡。
+  - 後台存檔若未成功寫入雲端，畫面會跳紅色警示（絕不沉默失敗）。
+  - Netlify 的 git 自動建置已停用（stop_builds），推 git 不會觸發部署，請勿重新開啟。
 
 ## 開發守則
 - 進 `web/` 後，提交前需通過：`pnpm lint`、`pnpm build`（必要時 `pnpm check`）。
